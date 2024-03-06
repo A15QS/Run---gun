@@ -26,6 +26,7 @@ blocks=[]
 for i in range(16):
     block = Actor("block_"+str(i+1))
     blocks.append(block)
+screen_mode = Actor("animation_mode_creen",(1920,-2994))
 infinite_click = Actor("game_text",(960,150))
 quit_game_text = Actor("quit_game_text",(960,410))
 quit_text = Actor("quit_text",(960,520))
@@ -361,6 +362,7 @@ def draw():
         pointer.draw()
     if mode == "menu":
         if mini_mode == "" or mini_mode == "quit":
+            screen_mode.draw()
             infinite_click.draw()
             play.draw()
             furs.draw()
