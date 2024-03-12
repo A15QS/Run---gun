@@ -24,9 +24,9 @@ FPS = 60
 #block_16 = Actor("block_16")
 blocks=[]
 for i in range(16):
-    block = Actor("block_"+str(i+1))
+    block = "block_"+str(i+1)
     blocks.append(block)
-screen_mode = Actor("animation_mode_creen",(1920,-2994))
+screen_mode = Actor("animation_mode_screen",(1920,-2994))
 infinite_click = Actor("game_text",(960,150))
 quit_game_text = Actor("quit_game_text",(960,410))
 quit_text = Actor("quit_text",(960,520))
@@ -268,72 +268,89 @@ my_map = [[ 5, 5, 5, 5, 6,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 my_map_to_draw = []
 def map_generator_draw():
     for i in range(len(my_map)):
-        for j in range(len(my_map)):
-            if my_map[i][j] == 0:
-                blocks[0]
-                blocks[0].left = blocks[0].width*j
-                blocks[0].top = blocks[0].height*i
-                my_map_to_draw.append(blocks[0])
+        new_row=[]
+        for j in range(len(my_map[0])):
             if my_map[i][j] == 1:
-                blocks[1].left = blocks[1].width*j
-                blocks[1].top = blocks[1].height*i
-                my_map_to_draw.append(blocks[1])
-            if my_map[i][j] == 2:
-                blocks[2].left = blocks[2].width*j
-                blocks[2].top = blocks[2].height*i
-                my_map_to_draw.append(blocks[2])
-            if my_map[i][j] == 3:
-                blocks[3].left = blocks[3].width*j
-                blocks[3].top = blocks[3].height*i
-                my_map_to_draw.append(blocks[3])
-            if my_map[i][j] == 4:
-                blocks[4].left = blocks[4].width*j
-                blocks[4].top = blocks[4].height*i
-                my_map_to_draw.append(blocks[4])
-            if my_map[i][j] == 5:
-                blocks[5].left = blocks[5].width*j
-                blocks[5].top = blocks[5].height*i
-                my_map_to_draw.append(blocks[5])
-            if my_map[i][j] == 6:
-                blocks[6].left = blocks[6].width*j
-                blocks[6].top = blocks[6].height*i
-                my_map_to_draw.append(blocks[6])
-            if my_map[i][j] == 7:
-                blocks[7].left = blocks[7].width*j
-                blocks[7].top = blocks[7].height*i
-                my_map_to_draw.append(blocks[7])
-            if my_map[i][j] == 8:
-                blocks[8].left = blocks[8].width*j
-                blocks[8].top = blocks[8].height*i
-                my_map_to_draw.append(blocks[8])
-            if my_map[i][j] == 9:
-                blocks[9].left = blocks[9].width*j
-                blocks[9].top = blocks[9].height*i
-                my_map_to_draw.append(blocks[9])
-            if my_map[i][j] == 10:
-                blocks[10].left = blocks[10].width*j
-                blocks[10].top = blocks[10].height*i
-                my_map_to_draw.append(blocks[10])
-            if my_map[i][j] == 11:
-                blocks[11].left = blocks[11].width*j
-                blocks[11].top = blocks[11].height*i
-                my_map_to_draw.append(blocks[11])
-            if my_map[i][j] == 12:
-                blocks[12].left = blocks[12].width*j
-                blocks[12].top = blocks[12].height*i
-                my_map_to_draw.append(blocks[12])
-            if my_map[i][j] == 13:
-                blocks[13].left = blocks[13].width*j
-                blocks[13].top = blocks[13].height*i
-                my_map_to_draw.append(blocks[13])
-            if my_map[i][j] == 14:
-                blocks[14].left = blocks[14].width*j
-                blocks[14].top = blocks[14].height*i
-                my_map_to_draw.append(blocks[14])
-            if my_map[i][j] == 15:
-                blocks[15].left = blocks[15].width*j
-                blocks[15].top = blocks[15].height*i
-                my_map_to_draw.append(blocks[15])
+                new_block=Actor(blocks[0])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 2:
+                new_block=Actor(blocks[1])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 3:
+                new_block=Actor(blocks[2])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 4:
+                new_block=Actor(blocks[3])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 5:
+                new_block=Actor(blocks[4])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 6:
+                new_block=Actor(blocks[5])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 7:
+                new_block=Actor(blocks[6])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 8:
+                new_block=Actor(blocks[7])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 9:
+                new_block=Actor(blocks[8])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 10:
+                new_block=Actor(blocks[9])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 11:
+                new_block=Actor(blocks[10])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 12:
+                new_block=Actor(blocks[11])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 13:
+                new_block=Actor(blocks[12])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 14:
+                new_block=Actor(blocks[13])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 15:
+                new_block=Actor(blocks[14])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+            elif my_map[i][j] == 16:
+                new_block=Actor(blocks[15])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_row.append(new_block)
+        my_map_to_draw.append(new_row)
 map_generator_draw()
 def draw():
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,time_pj
@@ -465,13 +482,14 @@ def draw():
             fur_select.draw()
             hair_select.draw()
             coin.draw()
-            screen.draw.text(str(count),center=(400,920),color="white",fontsize=200,fontname="pusab")
+            #screen.draw.text(str(count),center=(400,920),color="white",fontsize=200,fontname="pusab")
             rope.draw()
             back_button.draw()
         pointer.draw()
     if mode == "game":
         for i in range(len(my_map_to_draw)):
-            my_map_to_draw[i].draw()
+            for j in range(len(my_map_to_draw[i])):
+                my_map_to_draw[i][j].draw()
         pj.draw()
     if mode == "missions":
         bg_shop.draw()
