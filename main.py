@@ -23,10 +23,11 @@ FPS = 60
 #block_15 = Actor("block_15")
 #block_16 = Actor("block_16")
 blocks=[]
+bit_map = Actor("level_map")
 for i in range(30):
     block = "block_"+str(i+1)
     blocks.append(block)
-screen_mode = Actor("animation_mode_screen",(1920,-2994))
+screen_mode = Actor("animation_mode_screen",(960,-2994))
 infinite_click = Actor("game_text",(960,150))
 quit_game_text = Actor("quit_game_text",(960,410))
 quit_text = Actor("quit_text",(960,520))
@@ -214,6 +215,7 @@ rarrow_button = Actor("rarrow",(1720,540))
 how_to_play_text = Actor("how_to_play_text",(960,150))
 graphics_text = Actor("graphics_text",(960,150))
 opcions_text = Actor("opcions_text",(960,150))
+tree = Actor("tree_1",(960,150))
 mode = "entry"
 mini_mode = ""
 state_click = "no"
@@ -256,6 +258,7 @@ old_x = pj.x
 old_y = pj.y
 type_jump = 0
 jump = pj.y
+animation_mode = 0
 enemies = []
 my_map = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -264,8 +267,8 @@ my_map = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,-1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
           [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-          [ 5, 6, 6, 6,17, 2, 2, 2,18, 6, 6, 6, 7,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-          [ 5, 6, 6, 6,20, 6, 6, 6,21, 6, 6, 6, 7,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+          [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,17, 2, 2,18, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+          [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,20, 6, 6,21, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
           [ 9,10,10,10,10,10,10,10,10,10,10,10,11,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]]
 my_map_to_draw = []
 def map_generator_draw():
@@ -428,6 +431,7 @@ def draw():
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,time_pj
     if time_pj == 0:
         clock.schedule_interval(animation_pj,0.3)
+        clock.schedule_interval(for_charge,0.5)
         time_pj = 1
     if config == 0:
         screen.surface=pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN)
@@ -445,6 +449,7 @@ def draw():
     if mode != "game":
         floor.draw()
         floorx2.draw()
+    screen_mode.draw()
     if mode == "entry":
         charge_im.draw()
         pointer.draw()
@@ -459,7 +464,9 @@ def draw():
             settings.draw()
             stats.draw()
             cross.draw()
+            tree.draw()
             pointer.draw()
+            screen_mode.draw()
     if mode == "skins":
         if mini_mode != "shop":
             bg_color.draw()
@@ -553,15 +560,18 @@ def draw():
             fur_select.draw()
             hair_select.draw()
             coin.draw()
-            #screen.draw.text(str(count),center=(400,920),color="white",fontsize=200,fontname="pusab")
+            screen.draw.text(str(count),center=(400,920),color="white",fontsize=200)
             rope.draw()
             back_button.draw()
         pointer.draw()
+        screen_mode.draw()
     if mode == "game":
         for i in range(len(my_map_to_draw)):
             for j in range(len(my_map_to_draw[i])):
                 my_map_to_draw[i][j].draw()
         pj.draw()
+    if mode == "pos_game":
+        bit_map.draw()
     if mode == "missions":
         bg_shop.draw()
         missions_text.draw()
@@ -579,8 +589,7 @@ def draw():
         #coin.draw()
         mini_back_button.draw()
         pointer.draw()
-    if mode == "":
-        bg_black.draw()
+        screen_mode.draw()
     if mini_mode == "quit":
         bg_black.draw()
         screen_quit.draw()
@@ -597,6 +606,7 @@ def draw():
         rarrow_button.draw()
         mini_back_button.draw()
         pointer.draw()
+        screen_mode.draw()
     if mini_mode == "settings":
         bg_shop.draw()
         locked_secret.draw()
@@ -613,6 +623,7 @@ def draw():
         coming_soon.draw()
         mini_back_button.draw()
         pointer.draw()
+        screen_mode.draw()
     if mini_mode == "color":
         bg_black.draw()
         screen_color.draw()
@@ -694,6 +705,7 @@ def draw():
         shop_text.draw()
         mini_back_button.draw()
         pointer.draw()
+        screen_mode.draw()
     if mini_mode == "how_to_play":
         bg_shop.draw()
         if how_to_play_page != 1:
@@ -743,729 +755,736 @@ def draw():
         pointer.draw()
 def on_mouse_down(button,pos):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,how_to_play_page,skin
-    if button == mouse.LEFT:
-        if mode == "skins":
-            if rope.collidepoint(pos):
-                animate(rope,tween="linear",duration=0.2,y=120)
-            if locked_col != 4:
-                if mini_mode == "color":
-                    mini_mode = ""
-                    locked_col += 1
-            if locked_col == 4:
-                if mini_mode == "color":
-                    locked_col += 1
-                    fur5_locked.y = 1200
-            if mini_mode == "not_color":
-                mini_mode = ""
-        if mini_mode == "":
-            if mode == "menu":
-                if cross.collidepoint(pos):
-                    cross.image = "cross-"
-                if play.collidepoint(pos):
-                    play.image = "button_play-"
-                if furs.collidepoint(pos):
-                    furs.image = "skins_button-"
-                if missions.collidepoint(pos):
-                    missions.image = "missions_button-"
-                if achievements.collidepoint(pos):
-                    achievements.image = "achievements_button-"
-                if settings.collidepoint(pos):
-                    settings.image = "settings_button-"
-                if stats.collidepoint(pos):
-                    stats.image = "stats_button-"
-            if mode == "game":
-                if back_button.collidepoint(pos):
-                    back_button.image = "back_button-"
-                if player.collidepoint(pos):
-                    #player.y = 300
-                    #hair_player.y = 284
-                    #animate(player,tween="bounce_end",duration=0.5,y=600)
-                    #animate(hair_player,tween="bounce_end",duration=0.55,y=584)
-                    animate(player,tween="linear",duration=0.5,angle=for_player)
-                    animate(hair_player,tween="linear",duration=0.5,angle=for_player)
-                    for_player += 360
-                    count += click
-                if bonus_1.collidepoint(pos):
-                    bonus_1.image = "bonus_red-"
-                if bonus_2.collidepoint(pos):
-                    bonus_2.image = "bonus_red-"
-                if bonus_3.collidepoint(pos):
-                    bonus_3.image = "bonus_blue-"
+    if screen_mode.y == -2994:
+        if button == mouse.LEFT:
             if mode == "skins":
-                if fur_select.collidepoint(pos):
-                    if fur_select.image == "fur_select":
-                        fur_select.image = "fur_select-"
-                if hair_select.collidepoint(pos):
-                    if hair_select.image == "hair_select":
-                        hair_select.image = "hair_select-"
-                if back_button.collidepoint(pos):
-                    back_button.image = "back_button-"
-                if skin_page == 1:
-                    if fur1.collidepoint(pos):
-                        frame_fur.pos = fur1.pos
-                        skin = 1
-                    if fur2.collidepoint(pos):
-                        if fur2_locked.y == 1200:
-                            frame_fur.pos = fur2.pos
-                            skin = 2
-                        else:
-                            mini_mode = "not_color"
-                    if fur3.collidepoint(pos):
-                        if fur3_locked.y == 1200:
-                            frame_fur.pos = fur3.pos
-                            skin = 3
-                        else:
-                            mini_mode = "not_color"
-                    if fur4.collidepoint(pos):
-                        if fur4_locked.y == 1200:
-                            frame_fur.pos = fur4.pos
-                            skin = 4
-                        else:
-                            mini_mode = "not_color"
-                    if fur5.collidepoint(pos):
-                        if fur5_locked.y < 1200:
-                            mini_mode = "color"
-                        if fur5_locked.y == 1200:
-                            frame_fur.pos = fur5.pos
-                            skin = 5
-                    if fur6.collidepoint(pos):
-                        if fur6_locked.y == 1200:
-                            frame_fur.pos = fur6.pos
-                            skin = 6
-                        else:
-                            mini_mode = "not_color"
-                    if fur7.collidepoint(pos):
-                        if fur7_locked.y == 1200:
-                            frame_fur.pos = fur7.pos
-                            skin = 7
-                        else:
-                            mini_mode = "not_color"
-                    if fur8.collidepoint(pos):
-                        if fur8_locked.y == 1200:
-                            frame_fur.pos = fur8.pos
-                            skin = 8
-                        else:
-                            mini_mode = "not_color"
-                    if fur9.collidepoint(pos):
-                        if fur9_locked.y == 1200:
-                            frame_fur.pos = fur9.pos
-                            skin = 9
-                        else:
-                            mini_mode = "not_color"
-                    if fur10.collidepoint(pos):
-                        if fur10_locked.y == 1200:
-                            frame_fur.pos = fur10.pos
-                            skin = 10
-                        else:
-                            mini_mode = "not_color"
-                    if fur11.collidepoint(pos):
-                        if fur11_locked.y == 1200:
-                            frame_fur.pos = fur11.pos
-                            skin = 11
-                        else:
-                            mini_mode = "not_color"
-                    if fur12.collidepoint(pos):
-                        if fur12_locked.y == 1200:
-                            frame_fur.pos = fur12.pos
-                            skin = 12
-                        else:
-                            mini_mode = "not_color"
-                    if fur13.collidepoint(pos):
-                        if fur13_locked.y == 1200:
-                            frame_fur.pos = fur13.pos
-                            skin = 13
-                        else:
-                            mini_mode = "not_color"
-                    if fur14.collidepoint(pos):
-                        if fur14_locked.y == 1200:
-                            frame_fur.pos = fur14.pos
-                            skin = 14
-                        else:
-                            mini_mode = "not_color"
-                    if fur15.collidepoint(pos):
-                        if fur15_locked.y == 1200:
-                            frame_fur.pos = fur15.pos
-                            skin = 15
-                        else:
-                            mini_mode = "not_color"
-                    if fur16.collidepoint(pos):
-                        if fur16_locked.y == 1200:
-                            frame_fur.pos = fur16.pos
-                            skin = 16
-                        else:
-                            mini_mode = "not_color"
-                    if fur17.collidepoint(pos):
-                        if fur17_locked.y == 1200:
-                            frame_fur.pos = fur17.pos
-                            skin = 17
-                        else:
-                            mini_mode = "not_color"
-                    if fur18.collidepoint(pos):
-                        if fur18_locked.y == 1200:
-                            frame_fur.pos = fur18.pos
-                            skin = 18
-                        else:
-                            mini_mode = "not_color"
-                    if fur19.collidepoint(pos):
-                        if fur19_locked.y == 1200:
-                            frame_fur.pos = fur19.pos
-                            skin = 19
-                        else:
-                            mini_mode = "not_color"
-                if skin_page == 2:
-                    if hair1.collidepoint(pos):    
-                        frame_hair.pos = hair1.pos
-                        hair_player.image = "hair_0"
-                    if hair2.collidepoint(pos):
-                        if hair2_locked.y == 1200:
-                            frame_hair.pos = hair2.pos
-                            hair_player.image = "hair_1"
-                        else:
-                            mini_mode = "not_color"
-                    if hair3.collidepoint(pos):
-                        if hair3_locked.y == 1200:
-                            frame_hair.pos = hair3.pos
-                            hair_player.image = "hair_2"
-                        else:
-                            mini_mode = "not_color"
-                    if hair4.collidepoint(pos):
-                        if hair4_locked.y == 1200:
-                            frame_hair.pos = hair4.pos
-                            hair_player.image = "hair_3"
-                        else:
-                            mini_mode = "not_color"
-                    if hair5.collidepoint(pos):
-                        if hair5_locked.y == 1200:
-                            frame_hair.pos = hair5.pos
-                            hair_player.image = "hair_4"
-                        else:
-                            mini_mode = "not_color"
-                    if hair6.collidepoint(pos):
-                        if hair6_locked.y == 1200:
-                            frame_hair.pos = hair6.pos
-                            hair_player.image = "hair_5"
-                        else:
-                            mini_mode = "not_color"
-                    if hair7.collidepoint(pos):
-                        if hair7_locked.y == 1200:
-                            frame_hair.pos = hair7.pos
-                            hair_player.image = "hair_6"
-                        else:
-                            mini_mode = "not_color"
-                    if hair8.collidepoint(pos):
-                        if hair8_locked.y == 1200:
-                            frame_hair.pos = hair8.pos
-                            hair_player.image = "hair_7"
-                        else:
-                            mini_mode = "not_color"
-                    if hair9.collidepoint(pos):
-                        if hair9_locked.y == 1200:
-                            frame_hair.pos = hair9.pos
-                            hair_player.image = "hair_8"
-                        else:
-                            mini_mode = "not_color"
-                    if hair10.collidepoint(pos):
-                        if hair10_locked.y == 1200:
-                            frame_hair.pos = hair10.pos
-                            hair_player.image = "hair_9"
-                        else:
-                            mini_mode = "not_color"
-                    if hair11.collidepoint(pos):
-                        if hair11_locked.y == 1200:
-                            frame_hair.pos = hair11.pos
-                            hair_player.image = "hair_10"
-                        else:
-                            mini_mode = "not_color"
-                    if hair12.collidepoint(pos):
-                        if hair12_locked.y == 1200:
-                            frame_hair.pos = hair12.pos
-                            hair_player.image = "hair_11"
-                        else:
-                            mini_mode = "not_color"
-                    if hair13.collidepoint(pos):
-                        if hair13_locked.y == 1200:
-                            frame_hair.pos = hair13.pos
-                            hair_player.image = "hair_12"
-                        else:
-                            mini_mode = "not_color"
-                    if hair14.collidepoint(pos):
-                        if hair14_locked.y == 1200:
-                            frame_hair.pos = hair14.pos
-                            hair_player.image = "hair_13"
-                        else:
-                            mini_mode = "not_color"
-                    if hair15.collidepoint(pos):
-                        if hair15_locked.y == 1200:
-                            frame_hair.pos = hair15.pos
-                            hair_player.image = "hair_14"
-                        else:
-                            mini_mode = "not_color"
-                    if hair16.collidepoint(pos):
-                        if hair16_locked.y == 1200:
-                            frame_hair.pos = hair16.pos
-                            hair_player.image = "hair_15"
-                        else:
-                            mini_mode = "not_color"
-                    if hair17.collidepoint(pos):
-                        if hair17_locked.y == 1200:
-                            frame_hair.pos = hair17.pos
-                            hair_player.image = "hair_16"
-                        else:
-                            mini_mode = "not_color"
-                    if hair18.collidepoint(pos):
-                        if hair18_locked.y == 1200:
-                            frame_hair.pos = hair18.pos
-                            hair_player.image = "hair_17"
-                        else:
-                            mini_mode = "not_color"
-                    if hair19.collidepoint(pos):
-                        if hair19_locked.y == 1200:
-                            frame_hair.pos = hair19.pos
-                            hair_player.image = "hair_18"
-                        else:
-                            mini_mode = "not_color"
-                    if hair20.collidepoint(pos):
-                        if hair20_locked.y == 1200:
-                            frame_hair.pos = hair20.pos
-                            hair_player.image = "hair_19"
-                        else:
-                            mini_mode = "not_color"
-                    if hair21.collidepoint(pos):
-                        if hair21_locked.y == 1200:
-                            frame_hair.pos = hair21.pos
-                            hair_player.image = "hair_20"
-                        else:
-                            mini_mode = "not_color"
-        if mini_mode == "quit":
-            if cancel_exit.collidepoint(pos):
-                cancel_exit.image = "button_exit_2-"
-            if yes_quit.collidepoint(pos):
-                yes_quit.image = "button_exit-"
-        if mini_mode == "settings":
-            if mini_back_button.collidepoint(pos):
-                mini_back_button.image = "back_button-"
-            if how_to_play.collidepoint(pos):
-                how_to_play.image = "button_settings_how_to_play-"
-            if graphics.collidepoint(pos):
-                graphics.image = "button_settings_graphics-"
-            if opcions.collidepoint(pos):
-                opcions.image = "button_settings_opcions-"
-        if mini_mode == "how_to_play":
-            if mini_back_button.collidepoint(pos):
-                mini_back_button.image = "back_button-"
-            if rarrow_button.collidepoint(pos):
-                rarrow_button.image = "rarrow-"
-            if larrow_button.collidepoint(pos):
-                larrow_button.image = "larrow-"
-        if mini_mode == "graphics":
-            if mini_back_button.collidepoint(pos):
-                mini_back_button.image = "back_button-"
-            if check_screen.collidepoint(pos):
-                check_screen.image = "select_button-"
-        if mini_mode == "opcions":
-            if mini_back_button.collidepoint(pos):
-                mini_back_button.image = "back_button-"
-            if larrow_button.collidepoint(pos):
-                larrow_button.image = "select_button-"
-        if mode == "shop":
-            if mini_back_button.collidepoint(pos):
-                mini_back_button.image = "back_button-"
-            if mini_mode == "don't_have_money":
-                mini_mode = ""
-            elif object_shop_1.collidepoint(pos):
-                if count >= 300:
-                    object_shop_1.image = "col_unlock"
-                    fur2_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_2.collidepoint(pos):
-                if count >= 300:
-                    object_shop_2.image = "col_unlock"
-                    fur3_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_3.collidepoint(pos):
-                if count >= 300:
-                    object_shop_3.image = "col_unlock"
-                    fur4_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_4.collidepoint(pos):
-                if count >= 300:
-                    object_shop_4.image = "col_unlock"
-                    fur6_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_5.collidepoint(pos):
-                if count >= 300:
-                    object_shop_5.image = "col_unlock"
-                    fur7_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_6.collidepoint(pos):
-                if count >= 300:
-                    object_shop_6.image = "col_unlock"
-                    fur8_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_7.collidepoint(pos):
-                if count >= 300:
-                    object_shop_7.image = "col_unlock"
-                    fur9_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_8.collidepoint(pos):
-                if count >= 300:
-                    object_shop_8.image = "col_unlock"
-                    fur10_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_9.collidepoint(pos):
-                if count >= 300:
-                    object_shop_9.image = "col_unlock"
-                    fur11_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_10.collidepoint(pos):
-                if count >= 300:
-                    object_shop_10.image = "col_unlock"
-                    fur12_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_11.collidepoint(pos):
-                if count >= 300:
-                    object_shop_11.image = "col_unlock"
-                    fur13_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_12.collidepoint(pos):
-                if count >= 300:
-                    object_shop_12.image = "col_unlock"
-                    fur14_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_13.collidepoint(pos):
-                if count >= 300:
-                    object_shop_13.image = "col_unlock"
-                    fur15_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_14.collidepoint(pos):
-                if count >= 300:
-                    object_shop_14.image = "col_unlock"
-                    fur16_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_15.collidepoint(pos):
-                if count >= 300:
-                    object_shop_15.image = "col_unlock"
-                    fur17_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_16.collidepoint(pos):
-                if count >= 300:
-                    object_shop_16.image = "col_unlock"
-                    fur18_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_17.collidepoint(pos):
-                if count >= 300:
-                    object_shop_17.image = "col_unlock"
-                    fur19_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_18.collidepoint(pos):
-                if count >= 300:
-                    object_shop_18.image = "col_unlock"
-                    hair2_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_19.collidepoint(pos):
-                if count >= 300:
-                    object_shop_19.image = "col_unlock"
-                    hair3_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_20.collidepoint(pos):
-                if count >= 300:
-                    object_shop_20.image = "col_unlock"
-                    hair4_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_21.collidepoint(pos):
-                if count >= 300:
-                    object_shop_21.image = "col_unlock"
-                    hair5_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_22.collidepoint(pos):
-                if count >= 300:
-                    object_shop_22.image = "col_unlock"
-                    hair6_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_23.collidepoint(pos):
-                if count >= 300:
-                    object_shop_23.image = "col_unlock"
-                    hair7_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_24.collidepoint(pos):
-                if count >= 300:
-                    object_shop_24.image = "col_unlock"
-                    hair8_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_25.collidepoint(pos):
-                if count >= 300:
-                    object_shop_25.image = "col_unlock"
-                    hair9_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_26.collidepoint(pos):
-                if count >= 300:
-                    object_shop_26.image = "col_unlock"
-                    hair10_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_27.collidepoint(pos):
-                if count >= 300:
-                    object_shop_27.image = "col_unlock"
-                    hair11_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_28.collidepoint(pos):
-                if count >= 300:
-                    object_shop_28.image = "col_unlock"
-                    hair12_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_29.collidepoint(pos):
-                if count >= 300:
-                    object_shop_29.image = "col_unlock"
-                    hair13_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_30.collidepoint(pos):
-                if count >= 300:
-                    object_shop_30.image = "col_unlock"
-                    hair14_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_31.collidepoint(pos):
-                if count >= 300:
-                    object_shop_31.image = "col_unlock"
-                    hair15_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_32.collidepoint(pos):
-                if count >= 300:
-                    object_shop_32.image = "col_unlock"
-                    hair16_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_33.collidepoint(pos):
-                if count >= 300:
-                    object_shop_33.image = "col_unlock"
-                    hair17_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_34.collidepoint(pos):
-                if count >= 300:
-                    object_shop_34.image = "col_unlock"
-                    hair18_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_35.collidepoint(pos):
-                if count >= 300:
-                    object_shop_35.image = "col_unlock"
-                    hair19_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_36.collidepoint(pos):
-                if count >= 300:
-                    object_shop_36.image = "col_unlock"
-                    hair20_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-            elif object_shop_37.collidepoint(pos):
-                if count >= 300:
-                    object_shop_37.image = "col_unlock"
-                    hair21_locked.y = 1200
-                    count -= 300
-                else:
-                    mini_mode = "don't_have_money"
-def on_mouse_up(button,pos):
-    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,how_to_play_page,screen
-    if button == mouse.LEFT:
-        cross.image = "cross"
-        back_button.image = "back_button"
-        yes_quit.image = "button_exit"
-        cancel_exit.image = "button_exit_2"
-        furs.image = "skins_button"
-        play.image = "button_play"
-        missions.image = "missions_button"
-        achievements.image = "achievements_button"
-        settings.image = "settings_button"
-        stats.image = "stats_button"
-        select_missions.image = "bonus_red"
-        select_missions2.image = "bonus_red"
-        select_missions3.image = "bonus_blue"
-        bonus_1.image = "bonus_red"
-        bonus_2.image = "bonus_red"
-        bonus_3.image = "bonus_blue"
-        mini_back_button.image = "back_button"
-        how_to_play.image = "button_settings_how_to_play"
-        graphics.image = "button_settings_graphics"
-        opcions.image = "button_settings_opcions"
-        larrow_button.image = "larrow"
-        rarrow_button.image = "rarrow"
-        animate(rope,tween="linear",duration=0.2,y=115)
-        if check_screen.image == "select_button-":
-            check_screen.image = "select_button"
-        if fur_select.image == "fur_select-":
-            fur_select.image = "fur_select"
-        if hair_select.image == "hair_select-":
-            hair_select.image = "hair_select"
-        if mini_mode == "":
-            if mode == "entry":
-                mode = "menu"
-            if mode == "menu":
-                if cross.collidepoint(pos):
-                    mini_mode = "quit"
-                if furs.collidepoint(pos):
-                    mode = "skins"
-                    if counter == 1:
-                        clock.schedule_interval(for_coin,0.2)
-                        counter = 2
-                if play.collidepoint(pos):
-                    mode = "game"
-                if missions.collidepoint(pos):
-                    mode = "missions"
-                    if counter == 1:
-                        clock.schedule_interval(for_coin,0.2)
-                        counter = 2
-                if achievements.collidepoint(pos):
-                    mini_mode = "achievements"
-                if settings.collidepoint(pos):
-                    mini_mode = "settings"
-                if stats.collidepoint(pos):
-                    mini_mode = "stats"
-            if mode == "game":
-                if back_button.collidepoint(pos):
-                    mode = "menu"
-                if bonus_1.collidepoint(pos):
-                    if count >= 50:
-                        click += 1
-                        count -= 50
-                        bon_1 += 1
-                if bonus_2.collidepoint(pos):
-                    if count >= 125:
-                        clock.schedule_interval(for_bonus2,1)
-                        count -= 125
-                        bon_2 += 1
-                if bonus_3.collidepoint(pos):
-                    if count >= 500:
-                        clock.schedule_interval(for_bonus3,1)
-                        count -= 500
-                        bon_3 += 1
-            if mode == "missions":
-                if mini_back_button.collidepoint(pos):
-                    mode = "menu"
-            if mode == "skins":
-                if back_button.collidepoint(pos):
-                    mode = "menu"
-                if fur_select.collidepoint(pos):
-                    time.sleep(0.3)
-                    skin_page = 1
-                    fur_select.image = "fur_select_selected"
-                    hair_select.image = "hair_select"
-                if hair_select.collidepoint(pos):
-                    time.sleep(0.3)
-                    skin_page = 2
-                    hair_select.image = "hair_select_selected"
-                    fur_select.image = "fur_select"
                 if rope.collidepoint(pos):
-                    mode = "shop"
-        if mini_mode == "quit":
-            if cancel_exit.collidepoint(pos):
-                cancel_exit.image = "button_exit_2"
-                mini_mode = ""
-            if yes_quit.collidepoint(pos):
-                yes_quit.image = "button_exit"
-                mini_mode = ""
-                mode = ""
-                time.sleep(0.5)
-                exit()
-        if mode == "shop":
-            if mini_back_button.collidepoint(pos):
-                mode = "skins"
-        if mini_mode == "settings":
-            if mini_back_button.collidepoint(pos):
-                mini_mode = ""
-            if how_to_play.collidepoint(pos):
-                mini_mode = "how_to_play"
-            if graphics.collidepoint(pos):
-                mini_mode = "graphics"
-            if opcions.collidepoint(pos):
-                mini_mode = "opcions"
-        if mini_mode == "stats":
-            if mini_back_button.collidepoint(pos):
-                mini_mode = ""
-        if mini_mode == "achievements":
-            if mini_back_button.collidepoint(pos):
-                mini_mode = ""
-        if mini_mode == "how_to_play":
-            if mini_back_button.collidepoint(pos):
-                mini_mode = "settings"
-            if how_to_play_page != 1:
-                if larrow_button.collidepoint(pos):
-                    how_to_play_page -= 1
-            if how_to_play_page != 5:
+                    animate(rope,tween="linear",duration=0.2,y=120)
+                if locked_col != 4:
+                    if mini_mode == "color":
+                        mini_mode = ""
+                        locked_col += 1
+                if locked_col == 4:
+                    if mini_mode == "color":
+                        locked_col += 1
+                        fur5_locked.y = 1200
+                if mini_mode == "not_color":
+                    mini_mode = ""
+            if mini_mode == "":
+                if mode == "menu":
+                    if cross.collidepoint(pos):
+                        cross.image = "cross-"
+                    if play.collidepoint(pos):
+                        play.image = "button_play-"
+                    if furs.collidepoint(pos):
+                        furs.image = "skins_button-"
+                    if missions.collidepoint(pos):
+                        missions.image = "missions_button-"
+                    if achievements.collidepoint(pos):
+                        achievements.image = "achievements_button-"
+                    if settings.collidepoint(pos):
+                        settings.image = "settings_button-"
+                    if stats.collidepoint(pos):
+                        stats.image = "stats_button-"
+                if mode == "game":
+                    if back_button.collidepoint(pos):
+                        back_button.image = "back_button-"
+                    if player.collidepoint(pos):
+                        #player.y = 300
+                        #hair_player.y = 284
+                        #animate(player,tween="bounce_end",duration=0.5,y=600)
+                        #animate(hair_player,tween="bounce_end",duration=0.55,y=584)
+                        animate(player,tween="linear",duration=0.5,angle=for_player)
+                        animate(hair_player,tween="linear",duration=0.5,angle=for_player)
+                        for_player += 360
+                        count += click
+                    if bonus_1.collidepoint(pos):
+                        bonus_1.image = "bonus_red-"
+                    if bonus_2.collidepoint(pos):
+                        bonus_2.image = "bonus_red-"
+                    if bonus_3.collidepoint(pos):
+                        bonus_3.image = "bonus_blue-"
+                if mode == "skins":
+                    if fur_select.collidepoint(pos):
+                        if fur_select.image == "fur_select":
+                            fur_select.image = "fur_select-"
+                    if hair_select.collidepoint(pos):
+                        if hair_select.image == "hair_select":
+                            hair_select.image = "hair_select-"
+                    if back_button.collidepoint(pos):
+                        back_button.image = "back_button-"
+                    if skin_page == 1:
+                        if fur1.collidepoint(pos):
+                            frame_fur.pos = fur1.pos
+                            skin = 1
+                        if fur2.collidepoint(pos):
+                            if fur2_locked.y == 1200:
+                                frame_fur.pos = fur2.pos
+                                skin = 2
+                            else:
+                                mini_mode = "not_color"
+                        if fur3.collidepoint(pos):
+                            if fur3_locked.y == 1200:
+                                frame_fur.pos = fur3.pos
+                                skin = 3
+                            else:
+                                mini_mode = "not_color"
+                        if fur4.collidepoint(pos):
+                            if fur4_locked.y == 1200:
+                                frame_fur.pos = fur4.pos
+                                skin = 4
+                            else:
+                                mini_mode = "not_color"
+                        if fur5.collidepoint(pos):
+                            if fur5_locked.y < 1200:
+                                mini_mode = "color"
+                            if fur5_locked.y == 1200:
+                                frame_fur.pos = fur5.pos
+                                skin = 5
+                        if fur6.collidepoint(pos):
+                            if fur6_locked.y == 1200:
+                                frame_fur.pos = fur6.pos
+                                skin = 6
+                            else:
+                                mini_mode = "not_color"
+                        if fur7.collidepoint(pos):
+                            if fur7_locked.y == 1200:
+                                frame_fur.pos = fur7.pos
+                                skin = 7
+                            else:
+                                mini_mode = "not_color"
+                        if fur8.collidepoint(pos):
+                            if fur8_locked.y == 1200:
+                                frame_fur.pos = fur8.pos
+                                skin = 8
+                            else:
+                                mini_mode = "not_color"
+                        if fur9.collidepoint(pos):
+                            if fur9_locked.y == 1200:
+                                frame_fur.pos = fur9.pos
+                                skin = 9
+                            else:
+                                mini_mode = "not_color"
+                        if fur10.collidepoint(pos):
+                            if fur10_locked.y == 1200:
+                                frame_fur.pos = fur10.pos
+                                skin = 10
+                            else:
+                                mini_mode = "not_color"
+                        if fur11.collidepoint(pos):
+                            if fur11_locked.y == 1200:
+                                frame_fur.pos = fur11.pos
+                                skin = 11
+                            else:
+                                mini_mode = "not_color"
+                        if fur12.collidepoint(pos):
+                            if fur12_locked.y == 1200:
+                                frame_fur.pos = fur12.pos
+                                skin = 12
+                            else:
+                                mini_mode = "not_color"
+                        if fur13.collidepoint(pos):
+                            if fur13_locked.y == 1200:
+                                frame_fur.pos = fur13.pos
+                                skin = 13
+                            else:
+                                mini_mode = "not_color"
+                        if fur14.collidepoint(pos):
+                            if fur14_locked.y == 1200:
+                                frame_fur.pos = fur14.pos
+                                skin = 14
+                            else:
+                                mini_mode = "not_color"
+                        if fur15.collidepoint(pos):
+                            if fur15_locked.y == 1200:
+                                frame_fur.pos = fur15.pos
+                                skin = 15
+                            else:
+                                mini_mode = "not_color"
+                        if fur16.collidepoint(pos):
+                            if fur16_locked.y == 1200:
+                                frame_fur.pos = fur16.pos
+                                skin = 16
+                            else:
+                                mini_mode = "not_color"
+                        if fur17.collidepoint(pos):
+                            if fur17_locked.y == 1200:
+                                frame_fur.pos = fur17.pos
+                                skin = 17
+                            else:
+                                mini_mode = "not_color"
+                        if fur18.collidepoint(pos):
+                            if fur18_locked.y == 1200:
+                                frame_fur.pos = fur18.pos
+                                skin = 18
+                            else:
+                                mini_mode = "not_color"
+                        if fur19.collidepoint(pos):
+                            if fur19_locked.y == 1200:
+                                frame_fur.pos = fur19.pos
+                                skin = 19
+                            else:
+                                mini_mode = "not_color"
+                    if skin_page == 2:
+                        if hair1.collidepoint(pos):    
+                            frame_hair.pos = hair1.pos
+                            hair_player.image = "hair_0"
+                        if hair2.collidepoint(pos):
+                            if hair2_locked.y == 1200:
+                                frame_hair.pos = hair2.pos
+                                hair_player.image = "hair_1"
+                                
+                            else:
+                                mini_mode = "not_color"
+                        if hair3.collidepoint(pos):
+                            if hair3_locked.y == 1200:
+                                frame_hair.pos = hair3.pos
+                                hair_player.image = "hair_2"
+                            else:
+                                mini_mode = "not_color"
+                        if hair4.collidepoint(pos):
+                            if hair4_locked.y == 1200:
+                                frame_hair.pos = hair4.pos
+                                hair_player.image = "hair_3"
+                            else:
+                                mini_mode = "not_color"
+                        if hair5.collidepoint(pos):
+                            if hair5_locked.y == 1200:
+                                frame_hair.pos = hair5.pos
+                                hair_player.image = "hair_4"
+                            else:
+                                mini_mode = "not_color"
+                        if hair6.collidepoint(pos):
+                            if hair6_locked.y == 1200:
+                                frame_hair.pos = hair6.pos
+                                hair_player.image = "hair_5"
+                            else:
+                                mini_mode = "not_color"
+                        if hair7.collidepoint(pos):
+                            if hair7_locked.y == 1200:
+                                frame_hair.pos = hair7.pos
+                                hair_player.image = "hair_6"
+                            else:
+                                mini_mode = "not_color"
+                        if hair8.collidepoint(pos):
+                            if hair8_locked.y == 1200:
+                                frame_hair.pos = hair8.pos
+                                hair_player.image = "hair_7"
+                            else:
+                                mini_mode = "not_color"
+                        if hair9.collidepoint(pos):
+                            if hair9_locked.y == 1200:
+                                frame_hair.pos = hair9.pos
+                                hair_player.image = "hair_8"
+                            else:
+                                mini_mode = "not_color"
+                        if hair10.collidepoint(pos):
+                            if hair10_locked.y == 1200:
+                                frame_hair.pos = hair10.pos
+                                hair_player.image = "hair_9"
+                            else:
+                                mini_mode = "not_color"
+                        if hair11.collidepoint(pos):
+                            if hair11_locked.y == 1200:
+                                frame_hair.pos = hair11.pos
+                                hair_player.image = "hair_10"
+                            else:
+                                mini_mode = "not_color"
+                        if hair12.collidepoint(pos):
+                            if hair12_locked.y == 1200:
+                                frame_hair.pos = hair12.pos
+                                hair_player.image = "hair_11"
+                            else:
+                                mini_mode = "not_color"
+                        if hair13.collidepoint(pos):
+                            if hair13_locked.y == 1200:
+                                frame_hair.pos = hair13.pos
+                                hair_player.image = "hair_12"
+                            else:
+                                mini_mode = "not_color"
+                        if hair14.collidepoint(pos):
+                            if hair14_locked.y == 1200:
+                                frame_hair.pos = hair14.pos
+                                hair_player.image = "hair_13"
+                            else:
+                                mini_mode = "not_color"
+                        if hair15.collidepoint(pos):
+                            if hair15_locked.y == 1200:
+                                frame_hair.pos = hair15.pos
+                                hair_player.image = "hair_14"
+                            else:
+                                mini_mode = "not_color"
+                        if hair16.collidepoint(pos):
+                            if hair16_locked.y == 1200:
+                                frame_hair.pos = hair16.pos
+                                hair_player.image = "hair_15"
+                            else:
+                                mini_mode = "not_color"
+                        if hair17.collidepoint(pos):
+                            if hair17_locked.y == 1200:
+                                frame_hair.pos = hair17.pos
+                                hair_player.image = "hair_16"
+                            else:
+                                mini_mode = "not_color"
+                        if hair18.collidepoint(pos):
+                            if hair18_locked.y == 1200:
+                                frame_hair.pos = hair18.pos
+                                hair_player.image = "hair_17"
+                            else:
+                                mini_mode = "not_color"
+                        if hair19.collidepoint(pos):
+                            if hair19_locked.y == 1200:
+                                frame_hair.pos = hair19.pos
+                                hair_player.image = "hair_18"
+                            else:
+                                mini_mode = "not_color"
+                        if hair20.collidepoint(pos):
+                            if hair20_locked.y == 1200:
+                                frame_hair.pos = hair20.pos
+                                hair_player.image = "hair_19"
+                            else:
+                                mini_mode = "not_color"
+                        if hair21.collidepoint(pos):
+                            if hair21_locked.y == 1200:
+                                frame_hair.pos = hair21.pos
+                                hair_player.image = "hair_20"
+                            else:
+                                mini_mode = "not_color"
+            if mini_mode == "quit":
+                if cancel_exit.collidepoint(pos):
+                    cancel_exit.image = "button_exit_2-"
+                if yes_quit.collidepoint(pos):
+                    yes_quit.image = "button_exit-"
+            if mini_mode == "settings":
+                if mini_back_button.collidepoint(pos):
+                    mini_back_button.image = "back_button-"
+                if how_to_play.collidepoint(pos):
+                    how_to_play.image = "button_settings_how_to_play-"
+                if graphics.collidepoint(pos):
+                    graphics.image = "button_settings_graphics-"
+                if opcions.collidepoint(pos):
+                    opcions.image = "button_settings_opcions-"
+            if mini_mode == "how_to_play":
+                if mini_back_button.collidepoint(pos):
+                    mini_back_button.image = "back_button-"
                 if rarrow_button.collidepoint(pos):
-                    how_to_play_page += 1
-        if mini_mode == "graphics":
-            if mini_back_button.collidepoint(pos):
-                mini_mode = "settings"
-        if mini_mode == "opcions":
-            if mini_back_button.collidepoint(pos):
-                mini_mode = "settings"
+                    rarrow_button.image = "rarrow-"
+                if larrow_button.collidepoint(pos):
+                    larrow_button.image = "larrow-"
+            if mini_mode == "graphics":
+                if mini_back_button.collidepoint(pos):
+                    mini_back_button.image = "back_button-"
+                if check_screen.collidepoint(pos):
+                    check_screen.image = "select_button-"
+            if mini_mode == "opcions":
+                if mini_back_button.collidepoint(pos):
+                    mini_back_button.image = "back_button-"
+                if larrow_button.collidepoint(pos):
+                    larrow_button.image = "select_button-"
+            if mode == "shop":
+                if mini_back_button.collidepoint(pos):
+                    mini_back_button.image = "back_button-"
+                if mini_mode == "don't_have_money":
+                    mini_mode = ""
+                elif object_shop_1.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_1.image = "col_unlock"
+                        fur2_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_2.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_2.image = "col_unlock"
+                        fur3_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_3.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_3.image = "col_unlock"
+                        fur4_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_4.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_4.image = "col_unlock"
+                        fur6_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_5.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_5.image = "col_unlock"
+                        fur7_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_6.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_6.image = "col_unlock"
+                        fur8_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_7.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_7.image = "col_unlock"
+                        fur9_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_8.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_8.image = "col_unlock"
+                        fur10_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_9.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_9.image = "col_unlock"
+                        fur11_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_10.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_10.image = "col_unlock"
+                        fur12_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_11.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_11.image = "col_unlock"
+                        fur13_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_12.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_12.image = "col_unlock"
+                        fur14_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_13.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_13.image = "col_unlock"
+                        fur15_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_14.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_14.image = "col_unlock"
+                        fur16_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_15.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_15.image = "col_unlock"
+                        fur17_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_16.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_16.image = "col_unlock"
+                        fur18_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_17.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_17.image = "col_unlock"
+                        fur19_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_18.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_18.image = "col_unlock"
+                        hair2_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_19.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_19.image = "col_unlock"
+                        hair3_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_20.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_20.image = "col_unlock"
+                        hair4_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_21.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_21.image = "col_unlock"
+                        hair5_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_22.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_22.image = "col_unlock"
+                        hair6_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_23.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_23.image = "col_unlock"
+                        hair7_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_24.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_24.image = "col_unlock"
+                        hair8_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_25.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_25.image = "col_unlock"
+                        hair9_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_26.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_26.image = "col_unlock"
+                        hair10_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_27.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_27.image = "col_unlock"
+                        hair11_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_28.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_28.image = "col_unlock"
+                        hair12_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_29.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_29.image = "col_unlock"
+                        hair13_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_30.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_30.image = "col_unlock"
+                        hair14_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_31.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_31.image = "col_unlock"
+                        hair15_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_32.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_32.image = "col_unlock"
+                        hair16_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_33.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_33.image = "col_unlock"
+                        hair17_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_34.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_34.image = "col_unlock"
+                        hair18_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_35.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_35.image = "col_unlock"
+                        hair19_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_36.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_36.image = "col_unlock"
+                        hair20_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+                elif object_shop_37.collidepoint(pos):
+                    if count >= 300:
+                        object_shop_37.image = "col_unlock"
+                        hair21_locked.y = 1200
+                        count -= 300
+                    else:
+                        mini_mode = "don't_have_money"
+def on_mouse_up(button,pos):
+    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,how_to_play_page,animation_mode
+    if screen_mode.y == -2994:
+        if button == mouse.LEFT:
+            cross.image = "cross"
+            back_button.image = "back_button"
+            yes_quit.image = "button_exit"
+            cancel_exit.image = "button_exit_2"
+            furs.image = "skins_button"
+            play.image = "button_play"
+            missions.image = "missions_button"
+            achievements.image = "achievements_button"
+            settings.image = "settings_button"
+            stats.image = "stats_button"
+            select_missions.image = "bonus_red"
+            select_missions2.image = "bonus_red"
+            select_missions3.image = "bonus_blue"
+            bonus_1.image = "bonus_red"
+            bonus_2.image = "bonus_red"
+            bonus_3.image = "bonus_blue"
+            mini_back_button.image = "back_button"
+            how_to_play.image = "button_settings_how_to_play"
+            graphics.image = "button_settings_graphics"
+            opcions.image = "button_settings_opcions"
+            larrow_button.image = "larrow"
+            rarrow_button.image = "rarrow"
+            animate(rope,tween="linear",duration=0.2,y=115)
+            if check_screen.image == "select_button-":
+                check_screen.image = "select_button"
+            if fur_select.image == "fur_select-":
+                fur_select.image = "fur_select"
+            if hair_select.image == "hair_select-":
+                hair_select.image = "hair_select"
+            if mini_mode == "":
+                if mode == "menu":
+                    if cross.collidepoint(pos):
+                        mini_mode = "quit"
+                    if furs.collidepoint(pos):
+                        animation_mode = 1
+                        animate(screen_mode,tween="linear",duration=2,y=4074)
+                        if counter == 1:
+                            clock.schedule_interval(for_coin,0.2)
+                            counter = 2
+                    if play.collidepoint(pos):
+                        animation_mode = 2
+                        animate(screen_mode,tween="linear",duration=2,y=4074)
+                    if missions.collidepoint(pos):
+                        animation_mode = 3
+                        animate(screen_mode,tween="linear",duration=2,y=4074)
+                        if counter == 1:
+                            clock.schedule_interval(for_coin,0.2)
+                            counter = 2
+                    if achievements.collidepoint(pos):
+                        mini_mode = "achievements"
+                    if settings.collidepoint(pos):
+                        mini_mode = "settings"
+                    if stats.collidepoint(pos):
+                        mini_mode = "stats"
+                if mode == "game":
+                    if back_button.collidepoint(pos):
+                        animation_mode = 0
+                        animate(screen_mode,tween="linear",duration=2,y=4074)
+                    if bonus_1.collidepoint(pos):
+                        if count >= 50:
+                            click += 1
+                            count -= 50
+                            bon_1 += 1
+                    if bonus_2.collidepoint(pos):
+                        if count >= 125:
+                            clock.schedule_interval(for_bonus2,1)
+                            count -= 125
+                            bon_2 += 1
+                    if bonus_3.collidepoint(pos):
+                        if count >= 500:
+                            clock.schedule_interval(for_bonus3,1)
+                            count -= 500
+                            bon_3 += 1
+                if mode == "missions":
+                    if mini_back_button.collidepoint(pos):
+                        animation_mode = 0
+                        animate(screen_mode,tween="linear",duration=2,y=4074)
+                if mode == "skins":
+                    if back_button.collidepoint(pos):
+                        animation_mode = 0
+                        animate(screen_mode,tween="linear",duration=2,y=4074)
+                    if fur_select.collidepoint(pos):
+                        time.sleep(0.3)
+                        skin_page = 1
+                        fur_select.image = "fur_select_selected"
+                        hair_select.image = "hair_select"
+                    if hair_select.collidepoint(pos):
+                        time.sleep(0.3)
+                        skin_page = 2
+                        hair_select.image = "hair_select_selected"
+                        fur_select.image = "fur_select"
+                    if rope.collidepoint(pos):
+                        mode = "shop"
+            if mini_mode == "quit":
+                if cancel_exit.collidepoint(pos):
+                    cancel_exit.image = "button_exit_2"
+                    mini_mode = ""
+                if yes_quit.collidepoint(pos):
+                    yes_quit.image = "button_exit"
+                    mini_mode = ""
+                    mode = ""
+                    time.sleep(0.5)
+                    exit()
+            if mode == "shop":
+                if mini_back_button.collidepoint(pos):
+                    mode = "skins"
+            if mini_mode == "settings":
+                if mini_back_button.collidepoint(pos):
+                    mini_mode = ""
+                if how_to_play.collidepoint(pos):
+                    mini_mode = "how_to_play"
+                if graphics.collidepoint(pos):
+                    mini_mode = "graphics"
+                if opcions.collidepoint(pos):
+                    mini_mode = "opcions"
+            if mini_mode == "stats":
+                if mini_back_button.collidepoint(pos):
+                    mini_mode = ""
+            if mini_mode == "achievements":
+                if mini_back_button.collidepoint(pos):
+                    mini_mode = ""
+            if mini_mode == "how_to_play":
+                if mini_back_button.collidepoint(pos):
+                    mini_mode = "settings"
+                if how_to_play_page != 1:
+                    if larrow_button.collidepoint(pos):
+                        how_to_play_page -= 1
+                if how_to_play_page != 5:
+                    if rarrow_button.collidepoint(pos):
+                        how_to_play_page += 1
+            if mini_mode == "graphics":
+                if mini_back_button.collidepoint(pos):
+                    mini_mode = "settings"
+            if mini_mode == "opcions":
+                if mini_back_button.collidepoint(pos):
+                    mini_mode = "settings"
 def on_mouse_move(pos):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,mode_of_key
     pointer.pos = pos
@@ -1529,6 +1548,20 @@ def on_key_up(key):
             mini_mode = ""
 def update(dt):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player
+    if screen_mode.y >= 4074:
+        screen_mode. y = -2994
+    if animation_mode == 0:
+        if screen_mode.y >= 1080:
+            mode = "menu"
+    if animation_mode == 1:
+        if screen_mode.y >= 1080:
+            mode = "skins"
+    if animation_mode == 2:
+        if screen_mode.y >= 1080:
+            mode = "pos_game"
+    if animation_mode == 3:
+        if screen_mode.y >= 1080:
+            mode = "missions"
     if mode != "entry":
         bg2.x += 1
         bg3.x += 2
@@ -1589,6 +1622,9 @@ def update(dt):
     if player.y == 100:
         animate(player,tween="linear",duration=0.5,y=540)
         animate(hair_player,tween="linear",duration=0.5,y=412)
+    if mode == "menu":
+        if tree.x >- 20:
+            tree.x =- 5
 def for_bonus2():
     global count
     count += 1
@@ -1613,21 +1649,19 @@ def for_coin():
         coins_image = 0
 def for_charge():
     global charge,mode
+    charge += 1
     if charge == 0:
         charge_im.image = "charge_bar_0"
-        charge += 1
     if charge == 1:
         charge_im.image = "charge_bar_1"
-        charge += 1
     if charge == 2:
         charge_im.image = "charge_bar_2"
-        charge += 1
     if charge == 3:
         charge_im.image = "charge_bar_3"
-        charge += 1
     if charge == 4:
         charge_im.image = "charge_bar_4"
-        charge += 1
+    if charge == 5:
+        mode = "menu"
 def for_how_to_play():
     global how,game
     if mini_mode == "how_to_play":
@@ -1643,21 +1677,6 @@ def for_how():
         if game == 2:
             game -= 1
             how = 360
-def sweater_pj():
-    global pj,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
-    if pj_sweater == 1:
-        if direction_pj == 1:
-            if time_pj == 1:
-                sweater_player.image = "sweater_0_1"
-            elif time_pj == 2:
-                sweater_player.image = "sweater_0_2"
-            elif time_pj == 3:
-                sweater_player.image = "sweater_0_3"
-            elif time_pj == 4:
-                sweater_player.image = "sweater_0_4"
-            elif time_pj >= 5:
-                sweater_player.image = "sweater_0_1"
-                time_pj = 1
 def animation_pj():
     global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
     time_pj += 1
