@@ -253,13 +253,11 @@ time_pj = 0
 direction_pj = 1
 move_pj = 0
 speed_pj = 1
-pj_sweater = 1
-old_x = pj.x
-old_y = pj.y
 type_jump = 0
 jump = pj.y
 animation_mode = 0
 enemies = []
+gravedad=True
 my_map = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -568,25 +566,17 @@ def draw():
     if mode == "game":
         for i in range(len(my_map_to_draw)):
             for j in range(len(my_map_to_draw[i])):
-                my_map_to_draw[i][j].draw()
-        pj.draw()
+                my_map_to_draw[i][j].draw()  
+        pj.draw()   
     if mode == "pos_game":
         bit_map.draw()
+        back_button.draw()
+        pointer.draw()
+        screen_mode.draw()
     if mode == "missions":
         bg_shop.draw()
         missions_text.draw()
         coming_soon.draw()
-        #bg_missions.draw()
-        #select_missions.draw()
-        #creen.draw.text("conseguir",center=(960,200),color="white",fontsize=100)
-        #screen.draw.text("100 puntos",center=(960,280),color="white",fontsize=100)
-        #select_missions2.draw()
-        #screen.draw.text("conseguir",center=(960,500),color="white",fontsize=100)
-        #screen.draw.text("100 monedas",center=(960,580),color="white",fontsize=100)
-        #select_missions3.draw()
-        #screen.draw.text("conseguir",center=(960,800),color="white",fontsize=100)
-        #screen.draw.text("100 puntos",center=(960,880),color="white",fontsize=100)
-        #coin.draw()
         mini_back_button.draw()
         pointer.draw()
         screen_mode.draw()
@@ -786,24 +776,9 @@ def on_mouse_down(button,pos):
                         settings.image = "settings_button-"
                     if stats.collidepoint(pos):
                         stats.image = "stats_button-"
-                if mode == "game":
+                if mode == "pos_game":
                     if back_button.collidepoint(pos):
                         back_button.image = "back_button-"
-                    if player.collidepoint(pos):
-                        #player.y = 300
-                        #hair_player.y = 284
-                        #animate(player,tween="bounce_end",duration=0.5,y=600)
-                        #animate(hair_player,tween="bounce_end",duration=0.55,y=584)
-                        animate(player,tween="linear",duration=0.5,angle=for_player)
-                        animate(hair_player,tween="linear",duration=0.5,angle=for_player)
-                        for_player += 360
-                        count += click
-                    if bonus_1.collidepoint(pos):
-                        bonus_1.image = "bonus_red-"
-                    if bonus_2.collidepoint(pos):
-                        bonus_2.image = "bonus_red-"
-                    if bonus_3.collidepoint(pos):
-                        bonus_3.image = "bonus_blue-"
                 if mode == "skins":
                     if fur_select.collidepoint(pos):
                         if fur_select.image == "fur_select":
@@ -1403,25 +1378,10 @@ def on_mouse_up(button,pos):
                         mini_mode = "settings"
                     if stats.collidepoint(pos):
                         mini_mode = "stats"
-                if mode == "game":
+                if mode == "pos_game":
                     if back_button.collidepoint(pos):
                         animation_mode = 0
                         animate(screen_mode,tween="linear",duration=2,y=4074)
-                    if bonus_1.collidepoint(pos):
-                        if count >= 50:
-                            click += 1
-                            count -= 50
-                            bon_1 += 1
-                    if bonus_2.collidepoint(pos):
-                        if count >= 125:
-                            clock.schedule_interval(for_bonus2,1)
-                            count -= 125
-                            bon_2 += 1
-                    if bonus_3.collidepoint(pos):
-                        if count >= 500:
-                            clock.schedule_interval(for_bonus3,1)
-                            count -= 500
-                            bon_3 += 1
                 if mode == "missions":
                     if mini_back_button.collidepoint(pos):
                         animation_mode = 0
@@ -1454,7 +1414,7 @@ def on_mouse_up(button,pos):
                     exit()
             if mode == "shop":
                 if mini_back_button.collidepoint(pos):
-                    mode = "skins"
+                    mode = "shop"
             if mini_mode == "settings":
                 if mini_back_button.collidepoint(pos):
                     mini_mode = ""
@@ -1485,6 +1445,9 @@ def on_mouse_up(button,pos):
             if mini_mode == "opcions":
                 if mini_back_button.collidepoint(pos):
                     mini_mode = "settings"
+    if mode == "pos_game":
+        if button == mouse.MIDDLE:
+            bit_map.y += 5
 def on_mouse_move(pos):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,mode_of_key
     pointer.pos = pos
@@ -1497,6 +1460,7 @@ def on_mouse_move(pos):
             mode_of_key = 3
         else:
             mode_of_key = 0
+#def on_mouse_middle(button):
 def on_key_down(key):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,player,my_map,block_13,block_14,block_15
     if key == keys.RETURN: #or key == keys.RETURN or key == keys.ESCAPE or key == keys.BACKSPACE
@@ -1509,10 +1473,11 @@ def on_key_down(key):
                 if mode_of_key == 3:
                     missions.image = "missions_button-"
                 if mode_of_key == 4:
-                    mode = "menu" 
+                    mode = "menu"
 def on_key_up(key):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player
     if key == keys.RETURN: #or key == keys.RETURN or key == keys.ESCAPE or key == keys.BACKSPACE
+        mode = "game"
         cross.image = "cross"
         back_button.image = "back_button"
         yes_quit.image = "button_exit"
@@ -1547,7 +1512,30 @@ def on_key_up(key):
         if mini_mode != "":
             mini_mode = ""
 def update(dt):
-    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player
+    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,old_x,old_y,gravedad
+    old_x = pj.x
+    old_y = pj.y
+    
+    if mode == "game":
+        pj.x = old_x
+        pj.y = old_y
+        if gravedad:
+            pj.y += 10
+        for i in range(len(my_map_to_draw)):
+            for j in range(len(my_map_to_draw[i])):
+                if not (my_map_to_draw[i][j].colliderect(pj) or (my_map_to_draw[i][j].image == "block1" or  my_map_to_draw[i][j].image == "block2" or  my_map_to_draw[i][j].image == "block3" or my_map_to_draw[i][j].image == "block4")):
+                    gravedad = True
+                else:
+                    pj.x = old_x
+                    pj.y = old_y
+                    gravedad = False
+                    #pj.y +=1
+    if keyboard.D:
+        if mode == "game":
+            pj.x += 5
+    if keyboard.a:
+        if mode == "game":
+            pj.x -= 5
     if screen_mode.y >= 4074:
         screen_mode. y = -2994
     if animation_mode == 0:
