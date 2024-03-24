@@ -4,26 +4,11 @@ import random
 import time
 WIDTH = 1920
 HEIGHT = 1080
-TITLE = "Infinite Click"
+TITLE = "Run_Gun"
 FPS = 60
-#block_1 = Actor("block_1")
-#block_2 = Actor("block_2")
-#block_3 = Actor("block_3")
-#block_4 = Actor("block_4")
-#block_5 = Actor("block_5")
-#block_6 = Actor("block_6")
-#block_7 = Actor("block_7")
-#block_8 = Actor("block_8")
-#block_9 = Actor("block_9")
-#block_10 = Actor("block_10")
-#block_11 = Actor("block_11")
-#block_12 = Actor("block_12")
-#block_13 = Actor("block_13")
-#block_14 = Actor("block_14")
-#block_15 = Actor("block_15")
-#block_16 = Actor("block_16")
 blocks=[]
-bit_map = Actor("level_map")
+timer_y = 925
+timer_x = 450
 for i in range(30):
     block = "block_"+str(i+1)
     blocks.append(block)
@@ -118,6 +103,22 @@ hair18_locked = Actor("locked_select",(1650,850))
 hair19_locked = Actor("locked_select",(1350,1000))
 hair20_locked = Actor("locked_select",(1500,1000))
 hair21_locked = Actor("locked_select",(1650,1000))
+level_1 = Actor("level_button_1",(605,185))
+level_2 = Actor("level_button_2",(805,185))
+level_3 = Actor("level_button_2",(1005,185))
+level_4 = Actor("level_button_2",(1205,185))
+level_5 = Actor("level_button_2",(605,385))
+level_6 = Actor("level_button_2",(805,385))
+level_7 = Actor("level_button_2",(1005,385))
+level_8 = Actor("level_button_2",(1205,385))
+level_9 = Actor("level_button_2",(605,585))
+level_10 = Actor("level_button_2",(805,585))
+level_11 = Actor("level_button_2",(1005,585))
+level_12 = Actor("level_button_2",(1205,585))
+level_13 = Actor("level_button_2",(605,785))
+level_14 = Actor("level_button_2",(805,785))
+level_15 = Actor("level_button_2",(1005,785))
+level_16 = Actor("level_button_2",(1205,785))
 frame_fur = Actor("frame_select_fur",(1350,100))
 frame_hair = Actor("frame_select_hair",(1350,100))
 frame_hair_col = Actor("frame_select_hair_col",(3350,100))
@@ -136,14 +137,10 @@ stats = Actor("stats_button",(1160,980))
 coin = Actor("coin1",(150,920))
 cross = Actor("cross",(50,50))
 bg_color = Actor("bg_select-color",(1500,540))
-#skins
 player = Actor("fur_skin_0_sprite_1",(480,540))
-sweater_player = Actor("sweater_0_1",(480,540))
-pants_player = Actor("pants_0",(480,540))
-sneakers_player = Actor("sneakers_0",(480,540))
+shirt_player = Actor("shirt_0",(480,540))
 hair_player = Actor("hair_0",(480,412))
-#player
-pj = Actor("fur_play_0_1",(300,540))
+pj = Actor("fur_play_0_1_pos_1",(300,540))
 mr_riv = Actor("mr_riv1",(700,540))
 pointer = Actor("pointer",(300,300))
 screen_quit = Actor("screen_quit",(960,540))
@@ -215,7 +212,16 @@ rarrow_button = Actor("rarrow",(1720,540))
 how_to_play_text = Actor("how_to_play_text",(960,150))
 graphics_text = Actor("graphics_text",(960,150))
 opcions_text = Actor("opcions_text",(960,150))
-tree = Actor("tree_1",(960,150))
+bg_level = Actor("bg_level",(960,540))
+pj_menu = Actor("player_menu_1",(15,596))
+tree = Actor("tree_2",(15,596))
+heart_1 = Actor("heart",(960,140))
+heart_2 = Actor("heart-",(960,240))
+heart_3 = Actor("heart--",(960,340))
+energy_1 = Actor("energy",(960,440))
+energy_2 = Actor("energy-",(960,540))
+energy_3 = Actor("energy--",(960,640))
+timer = Actor("timer",(timer_x,timer_y))
 mode = "entry"
 mini_mode = ""
 state_click = "no"
@@ -250,25 +256,189 @@ how = 360
 game = 1
 skin = 1
 time_pj = 0
-direction_pj = 1
-move_pj = 0
+direction_pj = True
+move_pj = False
 speed_pj = 1
-type_jump = 0
-jump = pj.y
 animation_mode = 0
+gravity = True
+oh = pj.y
+uh = 100
+bush = 1
+grove = 2
 enemies = []
-gravedad=True
 my_map = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+          [-1,-1,-1,-1,-1,-1,-1, 1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [ 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,-1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-          [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-          [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,17, 2, 2,18, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-          [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,20, 6, 6,21, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-          [ 9,10,10,10,10,10,10,10,10,10,10,10,11,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]]
+          [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+          [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,17, 2, 2,18,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+          [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]]
+my_map_noclip = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [-1,-1,-1,-1,-1,-1,-1, 5, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [-1,-1,-1,-1,-1,-1,-1, 5, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [ 1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                 [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+                 [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,20, 6, 6,21, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+                 [ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7,-1, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]]
 my_map_to_draw = []
+def map_generator_draw_noclip():
+    for i in range(len(my_map_noclip)):
+        for j in range(len(my_map_noclip[0])):
+            if my_map_noclip[i][j] == 1:
+                new_block = Actor(blocks[0])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 2:
+                new_block = Actor(blocks[1])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 3:
+                new_block = Actor(blocks[2])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 4:
+                new_block = Actor(blocks[3])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 5:
+                new_block = Actor(blocks[4])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 6:
+                new_block = Actor(blocks[5])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 7:
+                new_block = Actor(blocks[6])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 8:
+                new_block = Actor(blocks[7])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 9:
+                new_block = Actor(blocks[8])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 10:
+                new_block = Actor(blocks[9])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 11:
+                new_block = Actor(blocks[10])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 12:
+                new_block = Actor(blocks[11])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 13:
+                new_block = Actor(blocks[12])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 14:
+                new_block = Actor(blocks[13])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 15:
+                new_block = Actor(blocks[14])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 16:
+                new_block = Actor(blocks[15])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 17:
+                new_block = Actor(blocks[16])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 18:
+                new_block = Actor(blocks[17])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 19:
+                new_block = Actor(blocks[18])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 20:
+                new_block = Actor(blocks[19])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 21:
+                new_block = Actor(blocks[20])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 22:
+                new_block = Actor(blocks[21])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 23:
+                new_block = Actor(blocks[22])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 24:
+                new_block = Actor(blocks[23])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 25:
+                new_block = Actor(blocks[24])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 26:
+                new_block = Actor(blocks[25])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 27:
+                new_block = Actor(blocks[26])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 28:
+                new_block = Actor(blocks[27])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 29:
+                new_block = Actor(blocks[28])
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
+            elif my_map_noclip[i][j] == 30:
+                new_block.left = new_block.width*j
+                new_block.top = new_block.height*i
+                new_block.draw()
 def map_generator_draw():
     for i in range(len(my_map)):
         new_row=[]
@@ -455,6 +625,7 @@ def draw():
         if mini_mode == "" or mini_mode == "quit":
             screen_mode.draw()
             infinite_click.draw()
+            tree.draw()
             play.draw()
             furs.draw()
             missions.draw()
@@ -462,9 +633,9 @@ def draw():
             settings.draw()
             stats.draw()
             cross.draw()
-            tree.draw()
             pointer.draw()
             screen_mode.draw()
+            pj_menu.draw()
     if mode == "skins":
         if mini_mode != "shop":
             bg_color.draw()
@@ -507,6 +678,7 @@ def draw():
                 fur18_locked.draw()
                 fur19_locked.draw()
                 frame_fur.draw()
+                player.draw()
             if skin_page == 2:
                 hair1.draw()
                 hair2.draw()
@@ -550,11 +722,7 @@ def draw():
                 hair20_locked.draw()
                 hair21_locked.draw()
                 frame_hair.draw()
-            player.draw()
-            sweater_player.draw()
-            pants_player.draw()
-            sneakers_player.draw()
-            hair_player.draw()
+                hair_player.draw()
             fur_select.draw()
             hair_select.draw()
             coin.draw()
@@ -564,12 +732,36 @@ def draw():
         pointer.draw()
         screen_mode.draw()
     if mode == "game":
+        map_generator_draw_noclip()
         for i in range(len(my_map_to_draw)):
             for j in range(len(my_map_to_draw[i])):
-                my_map_to_draw[i][j].draw()  
-        pj.draw()   
+                my_map_to_draw[i][j].draw()
+        pj.draw()
+        heart_1.draw()
+        heart_2.draw()
+        heart_3.draw()
+        energy_1.draw()
+        energy_2.draw()
+        energy_3.draw()
+        timer.draw()
     if mode == "pos_game":
-        bit_map.draw()
+        bg_level.draw()
+        level_1.draw()
+        level_2.draw()
+        level_3.draw()
+        level_4.draw()
+        level_5.draw()
+        level_6.draw()
+        level_7.draw()
+        level_8.draw()
+        level_9.draw()
+        level_10.draw()
+        level_11.draw()
+        level_12.draw()
+        level_13.draw()
+        level_14.draw()
+        level_15.draw()
+        level_16.draw()
         back_button.draw()
         pointer.draw()
         screen_mode.draw()
@@ -710,8 +902,6 @@ def draw():
             screen.draw.text("to get a coin",center=(1175,590),color="white",fontsize=150)
         if how_to_play_page >= 2:
             coming_soon.draw()
-            #screen.draw.text("Click on the player",center=(1175,490),color="white",fontsize=150)
-            #screen.draw.text("to get a coin",center=(1175,590),color="white",fontsize=150)
         how_to_play_text.draw()
         mini_back_button.draw()
         pointer.draw()
@@ -719,7 +909,6 @@ def draw():
         bg_shop.draw()
         graphics_text.draw()
         coming_soon.draw()
-        #check_screen.draw()
         mini_back_button.draw()
         pointer.draw()
     if mini_mode == "opcions":
@@ -779,6 +968,8 @@ def on_mouse_down(button,pos):
                 if mode == "pos_game":
                     if back_button.collidepoint(pos):
                         back_button.image = "back_button-"
+                    if level_1.collidepoint(pos):
+                        level_1.image = "level_button_1-"
                 if mode == "skins":
                     if fur_select.collidepoint(pos):
                         if fur_select.image == "fur_select":
@@ -1025,6 +1216,9 @@ def on_mouse_down(button,pos):
                                 hair_player.image = "hair_20"
                             else:
                                 mini_mode = "not_color"
+            if mode == "missions":
+                if mini_back_button.collidepoint(pos):
+                    mini_back_button.image = "back_button-"
             if mini_mode == "quit":
                 if cancel_exit.collidepoint(pos):
                     cancel_exit.image = "button_exit_2-"
@@ -1346,6 +1540,8 @@ def on_mouse_up(button,pos):
             opcions.image = "button_settings_opcions"
             larrow_button.image = "larrow"
             rarrow_button.image = "rarrow"
+            level_1.image = "level_button_1"
+            level_2.image = "level_button_2"
             animate(rope,tween="linear",duration=0.2,y=115)
             if check_screen.image == "select_button-":
                 check_screen.image = "select_button"
@@ -1382,6 +1578,8 @@ def on_mouse_up(button,pos):
                     if back_button.collidepoint(pos):
                         animation_mode = 0
                         animate(screen_mode,tween="linear",duration=2,y=4074)
+                    if level_1.collidepoint(pos):
+                        mode = "game"
                 if mode == "missions":
                     if mini_back_button.collidepoint(pos):
                         animation_mode = 0
@@ -1460,9 +1658,8 @@ def on_mouse_move(pos):
             mode_of_key = 3
         else:
             mode_of_key = 0
-#def on_mouse_middle(button):
 def on_key_down(key):
-    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,player,my_map,block_13,block_14,block_15
+    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,player,my_map
     if key == keys.RETURN: #or key == keys.RETURN or key == keys.ESCAPE or key == keys.BACKSPACE
         if mini_mode == "":
             if mode == "menu":
@@ -1474,10 +1671,14 @@ def on_key_down(key):
                     missions.image = "missions_button-"
                 if mode_of_key == 4:
                     mode = "menu"
+    if key == keys.W:
+        for i in range(len(my_map_to_draw)):
+            for j in range(len(my_map_to_draw[i])):
+                if not (my_map_to_draw[i][j].colliderect(pj) or (my_map_to_draw[i][j].image == "block1" or  my_map_to_draw[i][j].image == "block2" or  my_map_to_draw[i][j].image == "block3" or my_map_to_draw[i][j].image == "block4")):
+                    animate(pj,tween="decelerate",duration=0.2,y=jump)
 def on_key_up(key):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player
-    if key == keys.RETURN: #or key == keys.RETURN or key == keys.ESCAPE or key == keys.BACKSPACE
-        mode = "game"
+    if key == keys.RETURN:
         cross.image = "cross"
         back_button.image = "back_button"
         yes_quit.image = "button_exit"
@@ -1512,30 +1713,37 @@ def on_key_up(key):
         if mini_mode != "":
             mini_mode = ""
 def update(dt):
-    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,old_x,old_y,gravedad
+    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,old_x,old_y,gravity,jump,direction_pj,move_pj,bush,grove,orchad
     old_x = pj.x
     old_y = pj.y
-    
     if mode == "game":
         pj.x = old_x
         pj.y = old_y
-        if gravedad:
+        jump = oh - uh
+        if gravity:
             pj.y += 10
         for i in range(len(my_map_to_draw)):
             for j in range(len(my_map_to_draw[i])):
                 if not (my_map_to_draw[i][j].colliderect(pj) or (my_map_to_draw[i][j].image == "block1" or  my_map_to_draw[i][j].image == "block2" or  my_map_to_draw[i][j].image == "block3" or my_map_to_draw[i][j].image == "block4")):
-                    gravedad = True
+                    gravity = True
                 else:
                     pj.x = old_x
                     pj.y = old_y
-                    gravedad = False
-                    #pj.y +=1
+                    gravity = False
     if keyboard.D:
         if mode == "game":
-            pj.x += 5
-    if keyboard.a:
+            for i in range(len(my_map_to_draw)):
+                for j in range(len(my_map_to_draw[i])):
+                    if not (my_map_to_draw[i][j].colliderect(pj) or (my_map_to_draw[i][j].image == "block1" or  my_map_to_draw[i][j].image == "block2" or  my_map_to_draw[i][j].image == "block3" or my_map_to_draw[i][j].image == "block4")):
+                        pj.x += 5
+                        direction_pj = True
+                        move_pj = True
+    if keyboard.A:
         if mode == "game":
-            pj.x -= 5
+            if pj.x >= 10:
+                pj.x -= 5
+                direction_pj = False
+                move_pj = True
     if screen_mode.y >= 4074:
         screen_mode. y = -2994
     if animation_mode == 0:
@@ -1559,6 +1767,17 @@ def update(dt):
         bg4x2.x += 3
         floor.x += 10
         floorx2.x += 10
+        tree.x += grove
+    if grove == 0:
+        orchad = 5
+    if grove == 1:
+        orchad = 10
+    if grove == 2:
+        orchad = 20
+    if grove == 3:
+        orchad = 30
+    if grove == 4:
+        orchad = 40
     if bg2.x >= 2880:
         bg2.x = -960
     if bg2x2.x >= 2880:
@@ -1575,6 +1794,25 @@ def update(dt):
         floor.x = -960
     if floorx2.x >= 2880:
         floorx2.x = -960
+    if tree.x >= 2100:
+        bush = random.randint(1,4)
+        tree.x = -100
+        if mode == "menu":
+            grove = random.randint(0,4)
+        else:
+            grove = 1
+    if bush == 1:
+        tree.image = "tree_1"
+        tree.y = 596
+    if bush == 2:
+        tree.image = "tree_2"
+        tree.y = 636
+    if bush == 3:
+        tree.image = "tree_3"
+        tree.y = 616
+    if bush == 4:
+        tree.image = "tree_4"
+        tree.y = 644
     if count < 50:
         bonus_1.image = "bonus_red_locked"
     if count < 125:
@@ -1610,9 +1848,6 @@ def update(dt):
     if player.y == 100:
         animate(player,tween="linear",duration=0.5,y=540)
         animate(hair_player,tween="linear",duration=0.5,y=412)
-    if mode == "menu":
-        if tree.x >- 20:
-            tree.x =- 5
 def for_bonus2():
     global count
     count += 1
@@ -1636,7 +1871,7 @@ def for_coin():
     if coins_image >= 6:
         coins_image = 0
 def for_charge():
-    global charge,mode
+    global charge,mode,bush
     charge += 1
     if charge == 0:
         charge_im.image = "charge_bar_0"
@@ -1650,6 +1885,8 @@ def for_charge():
         charge_im.image = "charge_bar_4"
     if charge == 5:
         mode = "menu"
+        tree.x = random.randint(-100,2000)
+        bush = random.randint(1,4)
 def for_how_to_play():
     global how,game
     if mini_mode == "how_to_play":
@@ -1665,51 +1902,73 @@ def for_how():
         if game == 2:
             game -= 1
             how = 360
+def pj_random():
+    global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
+    
 def animation_pj():
     global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
     time_pj += 1
     if skin == 1:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_0_sprite_1"
-                pj.image = "fur_play_0_1"
+                pj.image = "fur_play_0_1_pos_1"
             elif time_pj == 2:
                 player.image = "fur_skin_0_sprite_2"
-                pj.image = "fur_play_0_2"
+                pj.image = "fur_play_0_2_pos_1"
                 hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_0_sprite_3"
-                pj.image = "fur_play_0_3"
+                pj.image = "fur_play_0_3_pos_1"
             elif time_pj == 4:
                 player.image = "fur_skin_0_sprite_4"
-                pj.image = "fur_play_0_4"
+                pj.image = "fur_play_0_4_pos_1"
                 hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_0_sprite_1"
-                pj.image = "fur_play_0_1"
+                pj.image = "fur_play_0_1_pos_1"
+                time_pj = 1
+        if not direction_pj and move_pj:
+            if time_pj == 1:
+                player.image = "fur_skin_0_sprite_1"
+                pj.image = "fur_play_0_1_pos_2"
+            elif time_pj == 2:
+                player.image = "fur_skin_0_sprite_2"
+                pj.image = "fur_play_0_2_pos_2"
+                hair_player.y += 32
+            elif time_pj == 3:
+                player.image = "fur_skin_0_sprite_3"
+                pj.image = "fur_play_0_3_pos_2"
+            elif time_pj == 4:
+                player.image = "fur_skin_0_sprite_4"
+                pj.image = "fur_play_0_4_pos_2"
+                hair_player.y -= 32
+            elif time_pj >= 5:
+                player.image = "fur_skin_0_sprite_1"
+                pj.image = "fur_play_0_1_pos_2"
                 time_pj = 1
     if skin == 2:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_1_sprite_1"
-                pj.image = "fur_play_1_1"
+                pj.image = "fur_play_1_1_pos_1"
             elif time_pj == 2:
                 player.image = "fur_skin_1_sprite_2"
-                pj.image = "fur_play_1_2"
+                pj.image = "fur_play_1_2_pos_1"
                 hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_1_sprite_3"
-                pj.image = "fur_play_1_3"
+                pj.image = "fur_play_1_3_pos_1"
             elif time_pj == 4:
                 player.image = "fur_skin_1_sprite_4"
-                pj.image = "fur_play_1_4"
+                pj.image = "fur_play_1_4_pos_1"
                 hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_1_sprite_1"
-                pj.image = "fur_play_1_1"
+                pj.image = "fur_play_1_1_pos_1"
                 time_pj = 1
     if skin == 3:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_2_sprite_1"
             elif time_pj == 2:
@@ -1724,7 +1983,7 @@ def animation_pj():
                 player.image = "fur_skin_2_sprite_1"
                 time_pj = 1
     if skin == 4:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_3_sprite_1"
             elif time_pj == 2:
@@ -1739,7 +1998,7 @@ def animation_pj():
                 player.image = "fur_skin_3_sprite_1"
                 time_pj = 1
     if skin == 5:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_4_sprite_1"
             elif time_pj == 2:
@@ -1754,7 +2013,7 @@ def animation_pj():
                 player.image = "fur_skin_4_sprite_1"
                 time_pj = 1
     if skin == 6:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_5_sprite_1"
             elif time_pj == 2:
@@ -1769,7 +2028,7 @@ def animation_pj():
                 player.image = "fur_skin_5_sprite_1"
                 time_pj = 1
     if skin == 7:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_6_sprite_1"
             elif time_pj == 2:
@@ -1784,7 +2043,7 @@ def animation_pj():
                 player.image = "fur_skin_6_sprite_1"
                 time_pj = 1
     if skin == 8:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_7_sprite_1"
             elif time_pj == 2:
@@ -1799,7 +2058,7 @@ def animation_pj():
                 player.image = "fur_skin_7_sprite_1"
                 time_pj = 1
     if skin == 9:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_8_sprite_1"
             elif time_pj == 2:
@@ -1814,7 +2073,7 @@ def animation_pj():
                 player.image = "fur_skin_8_sprite_1"
                 time_pj = 1
     if skin == 10:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_9_sprite_1"
             elif time_pj == 2:
@@ -1829,7 +2088,7 @@ def animation_pj():
                 player.image = "fur_skin_9_sprite_1"
                 time_pj = 1
     if skin == 11:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_10_sprite_1"
             elif time_pj == 2:
@@ -1844,7 +2103,7 @@ def animation_pj():
                 player.image = "fur_skin_10_sprite_1"
                 time_pj = 1
     if skin == 12:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_11_sprite_1"
             elif time_pj == 2:
@@ -1859,7 +2118,7 @@ def animation_pj():
                 player.image = "fur_skin_11_sprite_1"
                 time_pj = 1
     if skin == 13:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_12_sprite_1"
             elif time_pj == 2:
@@ -1874,7 +2133,7 @@ def animation_pj():
                 player.image = "fur_skin_12_sprite_1"
                 time_pj = 1
     if skin == 14:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_13_sprite_1"
             elif time_pj == 2:
@@ -1889,7 +2148,7 @@ def animation_pj():
                 player.image = "fur_skin_13_sprite_1"
                 time_pj = 1
     if skin == 15:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_14_sprite_1"
             elif time_pj == 2:
@@ -1904,7 +2163,7 @@ def animation_pj():
                 player.image = "fur_skin_14_sprite_1"
                 time_pj = 1
     if skin == 16:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_15_sprite_1"
             elif time_pj == 2:
@@ -1919,7 +2178,7 @@ def animation_pj():
                 player.image = "fur_skin_15_sprite_1"
                 time_pj = 1
     if skin == 17:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_16_sprite_1"
             elif time_pj == 2:
@@ -1934,7 +2193,7 @@ def animation_pj():
                 player.image = "fur_skin_16_sprite_1"
                 time_pj = 1
     if skin == 18:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_17_sprite_1"
             elif time_pj == 2:
@@ -1949,7 +2208,7 @@ def animation_pj():
                 player.image = "fur_skin_17_sprite_1"
                 time_pj = 1
     if skin == 19:
-        if (direction_pj == 1 and move_pj == 0):
+        if direction_pj and move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_18_sprite_1"
             elif time_pj == 2:
@@ -1962,5 +2221,8 @@ def animation_pj():
                 hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_18_sprite_1"
-                time_pj = 1            
+                time_pj = 1
+#    (\_/)    te extrañámos acá :'(
+#    (o,<)    <3 te amamos :'(
+#   (")_(")   Fran forever
 pgzrun.go()
