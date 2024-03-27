@@ -213,7 +213,8 @@ how_to_play_text = Actor("how_to_play_text",(960,150))
 graphics_text = Actor("graphics_text",(960,150))
 opcions_text = Actor("opcions_text",(960,150))
 bg_level = Actor("bg_level",(960,540))
-pj_menu = Actor("player_menu_1",(15,596))
+pj_menu = Actor("player_menu_1_move_1",(15,596))
+creator_charge = Actor("add_charge_enter",(1820,100))
 tree = Actor("tree_2",(15,596))
 heart_1 = Actor("heart",(960,140))
 heart_2 = Actor("heart-",(960,240))
@@ -256,6 +257,7 @@ how = 360
 game = 1
 skin = 1
 time_pj = 0
+time_hair = 0
 direction_pj = True
 move_pj = False
 speed_pj = 1
@@ -265,6 +267,9 @@ oh = pj.y
 uh = 100
 bush = 1
 grove = 2
+ambient = "#91ccff"
+but = False
+fps = True
 enemies = []
 my_map = [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
           [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -445,160 +450,162 @@ def map_generator_draw():
         for j in range(len(my_map[0])):
             if my_map[i][j] == 1:
                 new_block = Actor(blocks[0])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 2:
                 new_block = Actor(blocks[1])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 3:
                 new_block = Actor(blocks[2])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 4:
                 new_block = Actor(blocks[3])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 5:
                 new_block = Actor(blocks[4])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 6:
                 new_block = Actor(blocks[5])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 7:
                 new_block = Actor(blocks[6])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 8:
                 new_block = Actor(blocks[7])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 9:
                 new_block = Actor(blocks[8])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 10:
                 new_block = Actor(blocks[9])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 11:
                 new_block = Actor(blocks[10])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 12:
                 new_block = Actor(blocks[11])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 13:
                 new_block = Actor(blocks[12])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 14:
                 new_block = Actor(blocks[13])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 15:
                 new_block = Actor(blocks[14])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 16:
                 new_block = Actor(blocks[15])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 17:
                 new_block = Actor(blocks[16])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 18:
                 new_block = Actor(blocks[17])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 19:
                 new_block = Actor(blocks[18])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 20:
                 new_block = Actor(blocks[19])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 21:
                 new_block = Actor(blocks[20])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 22:
                 new_block = Actor(blocks[21])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 23:
                 new_block = Actor(blocks[22])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 24:
                 new_block = Actor(blocks[23])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 25:
                 new_block = Actor(blocks[24])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 26:
                 new_block = Actor(blocks[25])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 27:
                 new_block = Actor(blocks[26])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 28:
                 new_block = Actor(blocks[27])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 29:
                 new_block = Actor(blocks[28])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
             elif my_map[i][j] == 30:
                 new_block = Actor(blocks[29])
-                new_block.left = new_block.width*j
-                new_block.top = new_block.height*i
+                new_block.left = 128*j
+                new_block.top = 128*i
                 new_row.append(new_block)
         my_map_to_draw.append(new_row)
 map_generator_draw()
 def draw():
-    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,time_pj
+    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,time_pj,fps
     if time_pj == 0:
         clock.schedule_interval(animation_pj,0.3)
+        clock.schedule_interval(animation_hair_pj,0.6)
+        #clock.schedule_interval(for_pj_menu,0.3)
         clock.schedule_interval(for_charge,0.5)
         time_pj = 1
     if config == 0:
@@ -607,16 +614,19 @@ def draw():
     if config == 2:
         screen.surface=pygame.display.set_mode((WIDTH,HEIGHT))
         config = 3
-    screen.fill("#91ccff")
-    bg2.draw()
-    bg2x2.draw()
-    bg3.draw()
-    bg3x2.draw()
-    bg4.draw()
-    bg4x2.draw()
+    screen.fill(ambient)
     if mode != "game":
+        bg2.draw()
+        bg2x2.draw()
+        bg3.draw()
+        bg3x2.draw()
+        bg4.draw()
+        bg4x2.draw()
+        creator_charge.draw()
         floor.draw()
         floorx2.draw()
+        if fps:
+            screen.draw.text(str(FPS),center=(1000,1000),color="white",fontsize=200)
     screen_mode.draw()
     if mode == "entry":
         charge_im.draw()
@@ -933,9 +943,10 @@ def draw():
         screen.draw.text("color not available",center=(1075,540),color="white",fontsize=90)
         pointer.draw()
 def on_mouse_down(button,pos):
-    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,how_to_play_page,skin
+    global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,how_to_play_page,skin,but
     if screen_mode.y == -2994:
         if button == mouse.LEFT:
+            but = True
             if mode == "skins":
                 if rope.collidepoint(pos):
                     animate(rope,tween="linear",duration=0.2,y=120)
@@ -1516,136 +1527,134 @@ def on_mouse_down(button,pos):
                         mini_mode = "don't_have_money"
 def on_mouse_up(button,pos):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,how_to_play_page,animation_mode
-    if screen_mode.y == -2994:
-        if button == mouse.LEFT:
-            cross.image = "cross"
-            back_button.image = "back_button"
-            yes_quit.image = "button_exit"
-            cancel_exit.image = "button_exit_2"
-            furs.image = "skins_button"
-            play.image = "button_play"
-            missions.image = "missions_button"
-            achievements.image = "achievements_button"
-            settings.image = "settings_button"
-            stats.image = "stats_button"
-            select_missions.image = "bonus_red"
-            select_missions2.image = "bonus_red"
-            select_missions3.image = "bonus_blue"
-            bonus_1.image = "bonus_red"
-            bonus_2.image = "bonus_red"
-            bonus_3.image = "bonus_blue"
-            mini_back_button.image = "back_button"
-            how_to_play.image = "button_settings_how_to_play"
-            graphics.image = "button_settings_graphics"
-            opcions.image = "button_settings_opcions"
-            larrow_button.image = "larrow"
-            rarrow_button.image = "rarrow"
-            level_1.image = "level_button_1"
-            level_2.image = "level_button_2"
-            animate(rope,tween="linear",duration=0.2,y=115)
-            if check_screen.image == "select_button-":
-                check_screen.image = "select_button"
-            if fur_select.image == "fur_select-":
-                fur_select.image = "fur_select"
-            if hair_select.image == "hair_select-":
-                hair_select.image = "hair_select"
-            if mini_mode == "":
-                if mode == "menu":
-                    if cross.collidepoint(pos):
-                        mini_mode = "quit"
-                    if furs.collidepoint(pos):
-                        animation_mode = 1
-                        animate(screen_mode,tween="linear",duration=2,y=4074)
-                        if counter == 1:
-                            clock.schedule_interval(for_coin,0.2)
-                            counter = 2
-                    if play.collidepoint(pos):
-                        animation_mode = 2
-                        animate(screen_mode,tween="linear",duration=2,y=4074)
-                    if missions.collidepoint(pos):
-                        animation_mode = 3
-                        animate(screen_mode,tween="linear",duration=2,y=4074)
-                        if counter == 1:
-                            clock.schedule_interval(for_coin,0.2)
-                            counter = 2
-                    if achievements.collidepoint(pos):
-                        mini_mode = "achievements"
-                    if settings.collidepoint(pos):
-                        mini_mode = "settings"
-                    if stats.collidepoint(pos):
-                        mini_mode = "stats"
-                if mode == "pos_game":
-                    if back_button.collidepoint(pos):
-                        animation_mode = 0
-                        animate(screen_mode,tween="linear",duration=2,y=4074)
-                    if level_1.collidepoint(pos):
-                        mode = "game"
-                if mode == "missions":
+    if but == True:
+        if screen_mode.y == -2994:
+            if button == mouse.LEFT:
+                cross.image = "cross"
+                back_button.image = "back_button"
+                yes_quit.image = "button_exit"
+                cancel_exit.image = "button_exit_2"
+                furs.image = "skins_button"
+                play.image = "button_play"
+                missions.image = "missions_button"
+                achievements.image = "achievements_button"
+                settings.image = "settings_button"
+                stats.image = "stats_button"
+                select_missions.image = "bonus_red"
+                select_missions2.image = "bonus_red"
+                select_missions3.image = "bonus_blue"
+                bonus_1.image = "bonus_red"
+                bonus_2.image = "bonus_red"
+                bonus_3.image = "bonus_blue"
+                mini_back_button.image = "back_button"
+                how_to_play.image = "button_settings_how_to_play"
+                graphics.image = "button_settings_graphics"
+                opcions.image = "button_settings_opcions"
+                larrow_button.image = "larrow"
+                rarrow_button.image = "rarrow"
+                level_1.image = "level_button_1"
+                level_2.image = "level_button_2"
+                animate(rope,tween="linear",duration=0.2,y=115)
+                if check_screen.image == "select_button-":
+                    check_screen.image = "select_button"
+                if fur_select.image == "fur_select-":
+                    fur_select.image = "fur_select"
+                if hair_select.image == "hair_select-":
+                    hair_select.image = "hair_select"
+                if mini_mode == "":
+                    if mode == "menu":
+                        if cross.collidepoint(pos):
+                            mini_mode = "quit"
+                        if furs.collidepoint(pos):
+                            animation_mode = 1
+                            animate(screen_mode,tween="linear",duration=2,y=4074)
+                            if counter == 1:
+                                clock.schedule_interval(for_coin,0.2)
+                                counter = 2
+                        if play.collidepoint(pos):
+                            animation_mode = 2
+                            animate(screen_mode,tween="linear",duration=2,y=4074)
+                        if missions.collidepoint(pos):
+                            animation_mode = 3
+                            animate(screen_mode,tween="linear",duration=2,y=4074)
+                            if counter == 1:
+                                clock.schedule_interval(for_coin,0.2)
+                                counter = 2
+                        if achievements.collidepoint(pos):
+                            mini_mode = "achievements"
+                        if settings.collidepoint(pos):
+                            mini_mode = "settings"
+                        if stats.collidepoint(pos):
+                            mini_mode = "stats"
+                    if mode == "pos_game":
+                        if back_button.collidepoint(pos):
+                            animation_mode = 0
+                            animate(screen_mode,tween="linear",duration=2,y=4074)
+                        if level_1.collidepoint(pos):
+                            mode = "game"
+                    if mode == "missions":
+                        if mini_back_button.collidepoint(pos):
+                            animation_mode = 0
+                            animate(screen_mode,tween="linear",duration=2,y=4074)
+                    if mode == "skins":
+                        if back_button.collidepoint(pos):
+                            animation_mode = 0
+                            animate(screen_mode,tween="linear",duration=2,y=4074)
+                        if fur_select.collidepoint(pos):
+                            time.sleep(0.3)
+                            skin_page = 1
+                            fur_select.image = "fur_select_selected"
+                            hair_select.image = "hair_select"
+                        if hair_select.collidepoint(pos):
+                            time.sleep(0.3)
+                            skin_page = 2
+                            hair_select.image = "hair_select_selected"
+                            fur_select.image = "fur_select"
+                        if rope.collidepoint(pos):
+                            mode = "shop"
+                if mini_mode == "quit":
+                    if cancel_exit.collidepoint(pos):
+                        cancel_exit.image = "button_exit_2"
+                        mini_mode = ""
+                    if yes_quit.collidepoint(pos):
+                        yes_quit.image = "button_exit"
+                        mini_mode = ""
+                        mode = ""
+                        time.sleep(0.5)
+                        exit()
+                if mode == "shop":
                     if mini_back_button.collidepoint(pos):
-                        animation_mode = 0
-                        animate(screen_mode,tween="linear",duration=2,y=4074)
-                if mode == "skins":
-                    if back_button.collidepoint(pos):
-                        animation_mode = 0
-                        animate(screen_mode,tween="linear",duration=2,y=4074)
-                    if fur_select.collidepoint(pos):
-                        time.sleep(0.3)
-                        skin_page = 1
-                        fur_select.image = "fur_select_selected"
-                        hair_select.image = "hair_select"
-                    if hair_select.collidepoint(pos):
-                        time.sleep(0.3)
-                        skin_page = 2
-                        hair_select.image = "hair_select_selected"
-                        fur_select.image = "fur_select"
-                    if rope.collidepoint(pos):
                         mode = "shop"
-            if mini_mode == "quit":
-                if cancel_exit.collidepoint(pos):
-                    cancel_exit.image = "button_exit_2"
-                    mini_mode = ""
-                if yes_quit.collidepoint(pos):
-                    yes_quit.image = "button_exit"
-                    mini_mode = ""
-                    mode = ""
-                    time.sleep(0.5)
-                    exit()
-            if mode == "shop":
-                if mini_back_button.collidepoint(pos):
-                    mode = "shop"
-            if mini_mode == "settings":
-                if mini_back_button.collidepoint(pos):
-                    mini_mode = ""
-                if how_to_play.collidepoint(pos):
-                    mini_mode = "how_to_play"
-                if graphics.collidepoint(pos):
-                    mini_mode = "graphics"
-                if opcions.collidepoint(pos):
-                    mini_mode = "opcions"
-            if mini_mode == "stats":
-                if mini_back_button.collidepoint(pos):
-                    mini_mode = ""
-            if mini_mode == "achievements":
-                if mini_back_button.collidepoint(pos):
-                    mini_mode = ""
-            if mini_mode == "how_to_play":
-                if mini_back_button.collidepoint(pos):
-                    mini_mode = "settings"
-                if how_to_play_page != 1:
-                    if larrow_button.collidepoint(pos):
-                        how_to_play_page -= 1
-                if how_to_play_page != 5:
-                    if rarrow_button.collidepoint(pos):
-                        how_to_play_page += 1
-            if mini_mode == "graphics":
-                if mini_back_button.collidepoint(pos):
-                    mini_mode = "settings"
-            if mini_mode == "opcions":
-                if mini_back_button.collidepoint(pos):
-                    mini_mode = "settings"
-    if mode == "pos_game":
-        if button == mouse.MIDDLE:
-            bit_map.y += 5
+                if mini_mode == "settings":
+                    if mini_back_button.collidepoint(pos):
+                        mini_mode = ""
+                    if how_to_play.collidepoint(pos):
+                        mini_mode = "how_to_play"
+                    if graphics.collidepoint(pos):
+                        mini_mode = "graphics"
+                    if opcions.collidepoint(pos):
+                        mini_mode = "opcions"
+                if mini_mode == "stats":
+                    if mini_back_button.collidepoint(pos):
+                        mini_mode = ""
+                if mini_mode == "achievements":
+                    if mini_back_button.collidepoint(pos):
+                        mini_mode = ""
+                if mini_mode == "how_to_play":
+                    if mini_back_button.collidepoint(pos):
+                        mini_mode = "settings"
+                    if how_to_play_page != 1:
+                        if larrow_button.collidepoint(pos):
+                            how_to_play_page -= 1
+                    if how_to_play_page != 5:
+                        if rarrow_button.collidepoint(pos):
+                            how_to_play_page += 1
+                if mini_mode == "graphics":
+                    if mini_back_button.collidepoint(pos):
+                        mini_mode = "settings"
+                if mini_mode == "opcions":
+                    if mini_back_button.collidepoint(pos):
+                        mini_mode = "settings"
 def on_mouse_move(pos):
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,mode_of_key
     pointer.pos = pos
@@ -1732,18 +1741,13 @@ def update(dt):
                     gravity = False
     if keyboard.D:
         if mode == "game":
-            for i in range(len(my_map_to_draw)):
-                for j in range(len(my_map_to_draw[i])):
-                    if not (my_map_to_draw[i][j].colliderect(pj) or (my_map_to_draw[i][j].image == "block1" or  my_map_to_draw[i][j].image == "block2" or  my_map_to_draw[i][j].image == "block3" or my_map_to_draw[i][j].image == "block4")):
-                        pj.x += 5
-                        direction_pj = True
-                        move_pj = True
+            pj.x += 5
+            direction_pj = True
+            move_pj = True
     if keyboard.A:
         if mode == "game":
             if pj.x >= 10:
                 pj.x -= 5
-                direction_pj = False
-                move_pj = True
     if screen_mode.y >= 4074:
         screen_mode. y = -2994
     if animation_mode == 0:
@@ -1768,6 +1772,7 @@ def update(dt):
         floor.x += 10
         floorx2.x += 10
         tree.x += grove
+        pj_menu.x += grove
     if grove == 0:
         orchad = 5
     if grove == 1:
@@ -1902,323 +1907,290 @@ def for_how():
         if game == 2:
             game -= 1
             how = 360
-def pj_random():
-    global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
-    
+#def for_pj_menu():
+    #global mode,time_pj
+    #if mode == "menu":
+        #if time_pj == 1:
+            #pj_menu.image = "Player_menu_1_move_1"
+        #elif time_pj == 2:
+            #pj_menu.image = "Player_menu_2_move_1"
+        #elif time_pj == 3:
+            #pj_menu.image = "Player_menu_3_move_1"
+        #elif time_pj == 4:
+            #pj_menu.image = "Player_menu_4_move_1"
+        #elif time_pj == 5:
+            #pj_menu.image = "Player_menu_1_move_1"
+def animation_hair_pj():
+    global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj,time_hair
+    time_hair += 1
+    if skin == 1:
+        if time_hair == 1:
+            animate(hair_player,tween="accelerate",duration=1.2,y=540)
+        elif time_hair == 2:
+            animate(hair_player,tween="decelerate",duration=1.2,y=508)
+        elif time_hair == 3:
+            animate(hair_player,tween="accelerate",duration=1.2,y=540)
+        elif time_hair == 4:
+            animate(hair_player,tween="decelerate",duration=1.2,y=572)
+        elif time_hair == 5:
+            time_hair = 1
 def animation_pj():
     global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
     time_pj += 1
     if skin == 1:
-        if direction_pj and move_pj:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_0_sprite_1"
                 pj.image = "fur_play_0_1_pos_1"
             elif time_pj == 2:
                 player.image = "fur_skin_0_sprite_2"
                 pj.image = "fur_play_0_2_pos_1"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_0_sprite_3"
                 pj.image = "fur_play_0_3_pos_1"
             elif time_pj == 4:
                 player.image = "fur_skin_0_sprite_4"
                 pj.image = "fur_play_0_4_pos_1"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_0_sprite_1"
                 pj.image = "fur_play_0_1_pos_1"
                 time_pj = 1
-        if not direction_pj and move_pj:
-            if time_pj == 1:
-                player.image = "fur_skin_0_sprite_1"
-                pj.image = "fur_play_0_1_pos_2"
-            elif time_pj == 2:
-                player.image = "fur_skin_0_sprite_2"
-                pj.image = "fur_play_0_2_pos_2"
-                hair_player.y += 32
-            elif time_pj == 3:
-                player.image = "fur_skin_0_sprite_3"
-                pj.image = "fur_play_0_3_pos_2"
-            elif time_pj == 4:
-                player.image = "fur_skin_0_sprite_4"
-                pj.image = "fur_play_0_4_pos_2"
-                hair_player.y -= 32
-            elif time_pj >= 5:
-                player.image = "fur_skin_0_sprite_1"
-                pj.image = "fur_play_0_1_pos_2"
-                time_pj = 1
-    if skin == 2:
-        if direction_pj and move_pj:
+    elif skin == 2:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_1_sprite_1"
                 pj.image = "fur_play_1_1_pos_1"
             elif time_pj == 2:
                 player.image = "fur_skin_1_sprite_2"
                 pj.image = "fur_play_1_2_pos_1"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_1_sprite_3"
                 pj.image = "fur_play_1_3_pos_1"
             elif time_pj == 4:
                 player.image = "fur_skin_1_sprite_4"
                 pj.image = "fur_play_1_4_pos_1"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_1_sprite_1"
                 pj.image = "fur_play_1_1_pos_1"
                 time_pj = 1
-    if skin == 3:
-        if direction_pj and move_pj:
+    elif skin == 3:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_2_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_2_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_2_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_2_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_2_sprite_1"
                 time_pj = 1
-    if skin == 4:
-        if direction_pj and move_pj:
+    elif skin == 4:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_3_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_3_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_3_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_3_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_3_sprite_1"
                 time_pj = 1
-    if skin == 5:
-        if direction_pj and move_pj:
+    elif skin == 5:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_4_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_4_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_4_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_4_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_4_sprite_1"
                 time_pj = 1
-    if skin == 6:
-        if direction_pj and move_pj:
+    elif skin == 6:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_5_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_5_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_5_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_5_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_5_sprite_1"
                 time_pj = 1
-    if skin == 7:
-        if direction_pj and move_pj:
+    elif skin == 7:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_6_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_6_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_6_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_6_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_6_sprite_1"
                 time_pj = 1
-    if skin == 8:
-        if direction_pj and move_pj:
+    elif skin == 8:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_7_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_7_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_7_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_7_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_7_sprite_1"
                 time_pj = 1
-    if skin == 9:
-        if direction_pj and move_pj:
+    elif skin == 9:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_8_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_8_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_8_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_8_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_8_sprite_1"
                 time_pj = 1
-    if skin == 10:
-        if direction_pj and move_pj:
+    elif skin == 10:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_9_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_9_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_9_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_9_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_9_sprite_1"
                 time_pj = 1
-    if skin == 11:
-        if direction_pj and move_pj:
+    elif skin == 11:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_10_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_10_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_10_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_10_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_10_sprite_1"
                 time_pj = 1
-    if skin == 12:
-        if direction_pj and move_pj:
+    elif skin == 12:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_11_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_11_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_11_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_11_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_11_sprite_1"
                 time_pj = 1
-    if skin == 13:
-        if direction_pj and move_pj:
+    elif skin == 13:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_12_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_12_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_12_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_12_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_12_sprite_1"
                 time_pj = 1
-    if skin == 14:
-        if direction_pj and move_pj:
+    elif skin == 14:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_13_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_13_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_13_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_13_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_13_sprite_1"
                 time_pj = 1
-    if skin == 15:
-        if direction_pj and move_pj:
+    elif skin == 15:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_14_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_14_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_14_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_14_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_14_sprite_1"
                 time_pj = 1
-    if skin == 16:
-        if direction_pj and move_pj:
+    elif skin == 16:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_15_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_15_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_15_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_15_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_15_sprite_1"
                 time_pj = 1
-    if skin == 17:
-        if direction_pj and move_pj:
+    elif skin == 17:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_16_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_16_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_16_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_16_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_16_sprite_1"
                 time_pj = 1
-    if skin == 18:
-        if direction_pj and move_pj:
+    elif skin == 18:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_17_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_17_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_17_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_17_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_17_sprite_1"
                 time_pj = 1
-    if skin == 19:
-        if direction_pj and move_pj:
+    elif skin == 19:
+        if direction_pj and not move_pj:
             if time_pj == 1:
                 player.image = "fur_skin_18_sprite_1"
             elif time_pj == 2:
                 player.image = "fur_skin_18_sprite_2"
-                hair_player.y += 32
             elif time_pj == 3:
                 player.image = "fur_skin_18_sprite_3"
             elif time_pj == 4:
                 player.image = "fur_skin_18_sprite_4"
-                hair_player.y -= 32
             elif time_pj >= 5:
                 player.image = "fur_skin_18_sprite_1"
                 time_pj = 1
