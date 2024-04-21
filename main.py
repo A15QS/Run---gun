@@ -3,17 +3,12 @@ import pgzrun
 import random
 import time
 from level_1 import *
-from def_map import *
 WIDTH = 1920
 HEIGHT = 1080
 TITLE = "Run_Gun"
 FPS = 60
-blocks = []
 timer_y = 925
 timer_x = 450
-for i in range(30):
-    block = "block_"+str(i+1)
-    blocks.append(block)
 screen_mode = Actor("animation_mode_screen",(960,-2994))
 infinite_click = Actor("game_text",(960,150))
 quit_game_text = Actor("quit_game_text",(960,410))
