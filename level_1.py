@@ -1,4 +1,3 @@
-from main import *
 blocks = []
 for i in range(30):
     block = "block_"+str(i+1)
