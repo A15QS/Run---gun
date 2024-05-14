@@ -1,8 +1,10 @@
+from pygame import *
 import pygame
 import pgzrun
 import random
 import time
 from math import sin
+import sys
 WIDTH = 1920
 HEIGHT = 1080
 TITLE = "Run_Gun"
@@ -214,7 +216,6 @@ how_to_play_text = Actor("how_to_play_text",(960,150))
 graphics_text = Actor("graphics_text",(960,150))
 opcions_text = Actor("opcions_text",(960,150))
 bg_level = Actor("bg_level",(960,540))
-pj_menu = Actor("player_menu_1_move_1",(15,596))
 creator_charge = Actor("add_charge_enter",(1820,100))
 tree = Actor("tree_2",(15,596))
 heart_1 = Actor("heart",(960,140))
@@ -259,11 +260,11 @@ game = 1
 skin = 1
 time_pj = 0
 time_hair = 0
-time_pj_menu = 0
 direction_pj = True
 move_pj = False
 speed_pj = 1
 animation_mode = 0
+direction_hair = 1
 gravity = True
 oh = pj.y
 uh = 100
@@ -606,8 +607,7 @@ def draw():
     global mode,mini_mode,state_click,count,click,skin_page,lang,point_s,point_c,number_1,number_2,y_number,x_number,config,counter,charge,locked_col,bon_1,bon_2,bon_3,for_player,time_pj,fps
     if time_pj == 0:
         clock.schedule_interval(animation_pj,0.3)
-        clock.schedule_interval(animation_hair_pj,0.6)
-        clock.schedule_interval(for_pj_menu,0.3)
+        clock.schedule_interval(animation_hair_pj,0.001)
         clock.schedule_interval(for_charge,0.5)
         time_pj = 1
     if config == 0:
@@ -647,7 +647,6 @@ def draw():
             cross.draw()
             pointer.draw()
             screen_mode.draw()
-            pj_menu.draw()
     if mode == "skins":
         if mini_mode != "shop":
             bg_color.draw()
@@ -1771,10 +1770,9 @@ def update(dt):
         bg2x2.x += 1
         bg3x2.x += 2
         bg4x2.x += 3
-        floor.x += 10
-        floorx2.x += 10
+        floor.x -= 10
+        floorx2.x -= 10
         tree.x += grove
-        pj_menu.x += grove
     if grove == 0:
         orchad = 5
     if grove == 1:
@@ -1909,25 +1907,16 @@ def for_how():
         if game == 2:
             game -= 1
             how = 360
-def for_pj_menu():
-    global mode,time_pj_menu
-    time_pj_menu += 1
-    if mode == "menu":
-        if time_pj_menu == 1:
-            pj_menu.image = "Player_menu_1_move_1"
-        elif time_pj_menu == 2:
-            pj_menu.image = "Player_menu_2_move_1"
-        elif time_pj_menu == 3:
-            pj_menu.image = "Player_menu_3_move_1"
-        elif time_pj_menu == 4:
-            pj_menu.image = "Player_menu_4_move_1"
-        elif time_pj_menu == 5:
-            pj_menu.image = "Player_menu_1_move_1"
 def animation_hair_pj():
-    global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj,time_hair
-    time_hair += 1
-    if skin == 1:
-        hair_player.y = 400+100*sin(100/100)
+    global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj,direction_hair
+    # Mueve el objeto en la dirección actual
+    hair_player.x += 5 * direction_hair
+    # Si alcanza el borde derecho, cambia la dirección a la izquierda
+    if hair_player.right >= 300:
+        direction_hair = -1
+    # Si alcanza el borde izquierdo, cambia la dirección a la derecha
+    elif hair_player.left <= 100:
+        direction_hair = 1
 def animation_pj():
     global skin,mode,mini_mode,time_pj,direction_pj,move_pj,speed_pj
     time_pj += 1
